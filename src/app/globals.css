@@ -1,0 +1,256 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* plain @theme (not inline) so these also exist as CSS variables for the view-transition rules */
+@theme {
+  /* easing: enter decelerates, exit accelerates (and is shorter), on-screen moves use the standard curve */
+  --ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-exit: cubic-bezier(0.3, 0, 0.8, 0.15);
+  --ease-move: cubic-bezier(0.2, 0, 0, 1);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans);
+    --font-heading: var(--font-sans);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-success-soft: var(--success-soft);
+  --color-success-ink: var(--success-ink);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  /* raspberry world: every neutral is tinted from the blush hue; no greys */
+  --background: oklch(0.975 0.01 350);
+  --foreground: oklch(0.27 0.05 350);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.27 0.05 350);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.27 0.05 350);
+  --primary: oklch(0.55 0.2 2);
+  --primary-foreground: oklch(0.99 0.005 350);
+  --secondary: oklch(0.94 0.035 355);
+  --secondary-foreground: oklch(0.45 0.15 355);
+  --muted: oklch(0.95 0.015 350);
+  --muted-foreground: oklch(0.48 0.04 350);
+  --accent: oklch(0.94 0.035 355);
+  --accent-foreground: oklch(0.38 0.13 355);
+  /* brick red, warmer than the raspberry primary so "delete" never reads as "brand" */
+  --destructive: oklch(0.5 0.17 28);
+  --border: oklch(0.9 0.02 350);
+  --input: oklch(0.86 0.03 350);
+  --ring: oklch(0.65 0.18 2);
+  /* plum means "done" and nothing else (token keeps the semantic name "success") */
+  --success: oklch(0.45 0.15 320);
+  --success-foreground: oklch(0.99 0.01 320);
+  --success-soft: oklch(0.95 0.03 320);
+  --success-ink: oklch(0.4 0.13 320);
+  --shadow-color: 345 40% 25%;
+  --radius: 0.75rem;
+}
+
+.dark {
+  --background: oklch(0.2 0.02 350);
+  --foreground: oklch(0.96 0.01 350);
+  --card: oklch(0.245 0.025 350);
+  --card-foreground: oklch(0.96 0.01 350);
+  --popover: oklch(0.27 0.03 350);
+  --popover-foreground: oklch(0.96 0.01 350);
+  --primary: oklch(0.72 0.16 2);
+  --primary-foreground: oklch(0.2 0.05 355);
+  --secondary: oklch(0.31 0.05 355);
+  --secondary-foreground: oklch(0.88 0.07 355);
+  --muted: oklch(0.28 0.025 350);
+  --muted-foreground: oklch(0.78 0.03 350);
+  --accent: oklch(0.32 0.05 355);
+  --accent-foreground: oklch(0.93 0.04 355);
+  --destructive: oklch(0.72 0.16 30);
+  --border: oklch(0.33 0.03 350);
+  --input: oklch(0.4 0.035 350);
+  --ring: oklch(0.72 0.16 2);
+  --success: oklch(0.72 0.12 320);
+  --success-foreground: oklch(0.2 0.05 320);
+  --success-soft: oklch(0.3 0.06 320);
+  --success-ink: oklch(0.85 0.08 320);
+  --shadow-color: 345 50% 4%;
+}
+
+/* raised white surface: card, list, panel */
+@utility surface {
+  background-color: var(--card);
+  color: var(--card-foreground);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) * 1.4);
+  box-shadow: 0 1px 2px hsl(var(--shadow-color) / 0.06), 0 6px 16px -4px hsl(var(--shadow-color) / 0.08);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+    scroll-behavior: smooth;
+    /* reserve the scrollbar's space so short and long pages don't shift sideways */
+    scrollbar-gutter: stable;
+    scrollbar-color: var(--input) transparent;
+  }
+  body {
+    @apply bg-background text-foreground;
+    caret-color: var(--primary);
+    font-variant-numeric: tabular-nums;
+  }
+  ::selection {
+    background: color-mix(in oklch, var(--primary) 22%, transparent);
+  }
+  h1, h2, h3 {
+    text-wrap: balance;
+  }
+  a {
+    text-underline-offset: 3px;
+  }
+}
+
+/* Motion. Check-off: the exercise card morphs into its done row (and back). */
+::view-transition-group(.morph) {
+  animation-duration: 380ms;
+  animation-timing-function: var(--ease-move);
+  overflow: clip;
+  border-radius: calc(var(--radius) * 1.4);
+}
+::view-transition-image-pair(.morph) {
+  overflow: clip;
+  border-radius: inherit;
+}
+/* keep both snapshots unscaled and top-aligned; the group's size does the morph */
+::view-transition-old(.morph),
+::view-transition-new(.morph) {
+  height: 100%;
+  object-fit: none;
+  object-position: top left;
+}
+/* the new snapshot stays opaque and covers the old one, which only fades where it sticks out:
+   no doubled content, and moving items never turn see-through */
+::view-transition-old(.morph),
+::view-transition-new(.morph) {
+  mix-blend-mode: normal;
+}
+::view-transition-old(.morph) {
+  animation-duration: 120ms;
+}
+::view-transition-new(.morph) {
+  animation: none;
+}
+/* stacking while moving: the checked-off exercise on top, then headings, then everything else */
+::view-transition-group(.lift) {
+  z-index: 2;
+}
+::view-transition-group(.heading) {
+  z-index: 1;
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 180ms;
+}
+/* all done: the progress card turns into the celebration in place: old fades, new pops in */
+::view-transition-group(.celebrate),
+::view-transition-group(.progress-swap) {
+  animation-duration: 380ms;
+  animation-timing-function: var(--ease-move);
+}
+::view-transition-old(.celebrate) {
+  animation: 160ms var(--ease-exit) both fade-out-vt;
+}
+::view-transition-new(.celebrate) {
+  animation: celebrate-in 420ms var(--ease-enter) 120ms both;
+}
+/* all-done disc: one ring bursts outward once, right after the last tick */
+.celebrate-burst {
+  animation: celebrate-burst 700ms var(--ease-enter) 380ms both;
+}
+@keyframes celebrate-burst {
+  from {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.9);
+  }
+}
+@keyframes fade-out-vt {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes celebrate-in {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+}
+
+/* done rows open and close smoothly where the browser can animate to `auto` */
+@supports (interpolate-size: allow-keywords) {
+  :root {
+    interpolate-size: allow-keywords;
+  }
+  details::details-content {
+    block-size: 0;
+    opacity: 0;
+    overflow: clip;
+    transition:
+      block-size 360ms var(--ease-enter),
+      opacity 240ms ease-out,
+      content-visibility 360ms allow-discrete;
+  }
+  details[open]::details-content {
+    block-size: auto;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+  /* without the fade both snapshots would stay opaque for a frame */
+  ::view-transition-old(*) {
+    display: none;
+  }
+  details::details-content {
+    transition: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}

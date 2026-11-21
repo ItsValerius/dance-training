@@ -1,0 +1,576 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-22T00:25:08.870549+00:00",
+  "title": "Design System: Tanztraining",
+  "extensions": {
+    "colorMeta": {
+      "background": {
+        "role": "neutral",
+        "displayName": "Blush Mist",
+        "canonical": "oklch(0.975 0.01 350)",
+        "dark": "oklch(0.2 0.02 350)",
+        "tonalRamp": [
+          "oklch(0.18 0.019 350)",
+          "oklch(0.28 0.022 350)",
+          "oklch(0.38 0.025 350)",
+          "oklch(0.5 0.028 350)",
+          "oklch(0.62 0.028 350)",
+          "oklch(0.74 0.025 350)",
+          "oklch(0.86 0.021 350)",
+          "oklch(0.95 0.019 350)"
+        ]
+      },
+      "foreground": {
+        "role": "neutral",
+        "displayName": "Plum Ink",
+        "canonical": "oklch(0.27 0.05 350)",
+        "dark": "oklch(0.96 0.01 350)",
+        "tonalRamp": [
+          "oklch(0.18 0.031 350)",
+          "oklch(0.28 0.036 350)",
+          "oklch(0.38 0.041 350)",
+          "oklch(0.5 0.047 350)",
+          "oklch(0.62 0.047 350)",
+          "oklch(0.74 0.041 350)",
+          "oklch(0.86 0.035 350)",
+          "oklch(0.95 0.031 350)"
+        ]
+      },
+      "card": {
+        "role": "neutral",
+        "displayName": "Paper White",
+        "canonical": "oklch(1 0 0)",
+        "dark": "oklch(0.245 0.025 350)",
+        "tonalRamp": [
+          "oklch(0.18 0.013 350)",
+          "oklch(0.28 0.014 350)",
+          "oklch(0.38 0.016 350)",
+          "oklch(0.5 0.019 350)",
+          "oklch(0.62 0.019 350)",
+          "oklch(0.74 0.016 350)",
+          "oklch(0.86 0.014 350)",
+          "oklch(0.95 0.012 350)"
+        ]
+      },
+      "primary": {
+        "role": "primary",
+        "displayName": "Raspberry",
+        "canonical": "oklch(0.55 0.2 2)",
+        "dark": "oklch(0.72 0.16 2)",
+        "tonalRamp": [
+          "oklch(0.18 0.125 2)",
+          "oklch(0.28 0.145 2)",
+          "oklch(0.38 0.165 2)",
+          "oklch(0.5 0.188 2)",
+          "oklch(0.62 0.188 2)",
+          "oklch(0.74 0.165 2)",
+          "oklch(0.86 0.141 2)",
+          "oklch(0.95 0.123 2)"
+        ],
+        "hex": "#C62468"
+      },
+      "primary-foreground": {
+        "role": "primary",
+        "displayName": "Raspberry White",
+        "canonical": "oklch(0.99 0.005 350)",
+        "dark": "oklch(0.2 0.05 355)",
+        "tonalRamp": [
+          "oklch(0.18 0.019 350)",
+          "oklch(0.28 0.022 350)",
+          "oklch(0.38 0.025 350)",
+          "oklch(0.5 0.028 350)",
+          "oklch(0.62 0.028 350)",
+          "oklch(0.74 0.025 350)",
+          "oklch(0.86 0.021 350)",
+          "oklch(0.95 0.019 350)"
+        ]
+      },
+      "secondary": {
+        "role": "primary",
+        "displayName": "Blush Pink",
+        "canonical": "oklch(0.94 0.035 355)",
+        "dark": "oklch(0.31 0.05 355)",
+        "tonalRamp": [
+          "oklch(0.18 0.022 355)",
+          "oklch(0.28 0.025 355)",
+          "oklch(0.38 0.029 355)",
+          "oklch(0.5 0.033 355)",
+          "oklch(0.62 0.033 355)",
+          "oklch(0.74 0.029 355)",
+          "oklch(0.86 0.025 355)",
+          "oklch(0.95 0.022 355)"
+        ]
+      },
+      "secondary-foreground": {
+        "role": "primary",
+        "displayName": "Raspberry Ink on Blush",
+        "canonical": "oklch(0.45 0.15 355)",
+        "dark": "oklch(0.88 0.07 355)",
+        "tonalRamp": [
+          "oklch(0.18 0.094 355)",
+          "oklch(0.28 0.109 355)",
+          "oklch(0.38 0.123 355)",
+          "oklch(0.5 0.141 355)",
+          "oklch(0.62 0.141 355)",
+          "oklch(0.74 0.123 355)",
+          "oklch(0.86 0.106 355)",
+          "oklch(0.95 0.093 355)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Blush Haze",
+        "canonical": "oklch(0.95 0.015 350)",
+        "dark": "oklch(0.28 0.025 350)",
+        "tonalRamp": [
+          "oklch(0.18 0.019 350)",
+          "oklch(0.28 0.022 350)",
+          "oklch(0.38 0.025 350)",
+          "oklch(0.5 0.028 350)",
+          "oklch(0.62 0.028 350)",
+          "oklch(0.74 0.025 350)",
+          "oklch(0.86 0.021 350)",
+          "oklch(0.95 0.019 350)"
+        ]
+      },
+      "muted-foreground": {
+        "role": "neutral",
+        "displayName": "Mauve Slate",
+        "canonical": "oklch(0.48 0.04 350)",
+        "dark": "oklch(0.78 0.03 350)",
+        "tonalRamp": [
+          "oklch(0.18 0.025 350)",
+          "oklch(0.28 0.029 350)",
+          "oklch(0.38 0.033 350)",
+          "oklch(0.5 0.038 350)",
+          "oklch(0.62 0.038 350)",
+          "oklch(0.74 0.033 350)",
+          "oklch(0.86 0.028 350)",
+          "oklch(0.95 0.025 350)"
+        ]
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Blush Hairline",
+        "canonical": "oklch(0.9 0.02 350)",
+        "dark": "oklch(0.33 0.03 350)",
+        "tonalRamp": [
+          "oklch(0.18 0.019 350)",
+          "oklch(0.28 0.022 350)",
+          "oklch(0.38 0.025 350)",
+          "oklch(0.5 0.028 350)",
+          "oklch(0.62 0.028 350)",
+          "oklch(0.74 0.025 350)",
+          "oklch(0.86 0.021 350)",
+          "oklch(0.95 0.019 350)"
+        ]
+      },
+      "input": {
+        "role": "neutral",
+        "displayName": "Blush Field Stroke",
+        "canonical": "oklch(0.86 0.03 350)",
+        "dark": "oklch(0.4 0.035 350)",
+        "tonalRamp": [
+          "oklch(0.18 0.019 350)",
+          "oklch(0.28 0.022 350)",
+          "oklch(0.38 0.025 350)",
+          "oklch(0.5 0.028 350)",
+          "oklch(0.62 0.028 350)",
+          "oklch(0.74 0.025 350)",
+          "oklch(0.86 0.021 350)",
+          "oklch(0.95 0.019 350)"
+        ]
+      },
+      "ring": {
+        "role": "primary",
+        "displayName": "Focus Raspberry",
+        "canonical": "oklch(0.65 0.18 2)",
+        "dark": "oklch(0.72 0.16 2)",
+        "tonalRamp": [
+          "oklch(0.18 0.113 2)",
+          "oklch(0.28 0.131 2)",
+          "oklch(0.38 0.148 2)",
+          "oklch(0.5 0.169 2)",
+          "oklch(0.62 0.169 2)",
+          "oklch(0.74 0.148 2)",
+          "oklch(0.86 0.127 2)",
+          "oklch(0.95 0.111 2)"
+        ]
+      },
+      "destructive": {
+        "role": "error",
+        "displayName": "Brick",
+        "canonical": "oklch(0.5 0.17 28)",
+        "dark": "oklch(0.72 0.16 30)",
+        "tonalRamp": [
+          "oklch(0.18 0.107 28)",
+          "oklch(0.28 0.123 28)",
+          "oklch(0.38 0.14 28)",
+          "oklch(0.5 0.16 28)",
+          "oklch(0.62 0.16 28)",
+          "oklch(0.74 0.14 28)",
+          "oklch(0.86 0.12 28)",
+          "oklch(0.95 0.105 28)"
+        ]
+      },
+      "success": {
+        "role": "tertiary",
+        "displayName": "Done Plum",
+        "canonical": "oklch(0.45 0.15 320)",
+        "dark": "oklch(0.72 0.12 320)",
+        "tonalRamp": [
+          "oklch(0.18 0.094 320)",
+          "oklch(0.28 0.109 320)",
+          "oklch(0.38 0.123 320)",
+          "oklch(0.5 0.141 320)",
+          "oklch(0.62 0.141 320)",
+          "oklch(0.74 0.123 320)",
+          "oklch(0.86 0.106 320)",
+          "oklch(0.95 0.093 320)"
+        ]
+      },
+      "success-foreground": {
+        "role": "tertiary",
+        "displayName": "Done White",
+        "canonical": "oklch(0.99 0.01 320)",
+        "dark": "oklch(0.2 0.05 320)",
+        "tonalRamp": [
+          "oklch(0.18 0.019 320)",
+          "oklch(0.28 0.022 320)",
+          "oklch(0.38 0.025 320)",
+          "oklch(0.5 0.028 320)",
+          "oklch(0.62 0.028 320)",
+          "oklch(0.74 0.025 320)",
+          "oklch(0.86 0.021 320)",
+          "oklch(0.95 0.019 320)"
+        ]
+      },
+      "success-soft": {
+        "role": "tertiary",
+        "displayName": "Done Lilac",
+        "canonical": "oklch(0.95 0.03 320)",
+        "dark": "oklch(0.3 0.06 320)",
+        "tonalRamp": [
+          "oklch(0.18 0.019 320)",
+          "oklch(0.28 0.022 320)",
+          "oklch(0.38 0.025 320)",
+          "oklch(0.5 0.028 320)",
+          "oklch(0.62 0.028 320)",
+          "oklch(0.74 0.025 320)",
+          "oklch(0.86 0.021 320)",
+          "oklch(0.95 0.019 320)"
+        ]
+      },
+      "success-ink": {
+        "role": "tertiary",
+        "displayName": "Done Plum Ink",
+        "canonical": "oklch(0.4 0.13 320)",
+        "dark": "oklch(0.85 0.08 320)",
+        "tonalRamp": [
+          "oklch(0.18 0.081 320)",
+          "oklch(0.28 0.094 320)",
+          "oklch(0.38 0.107 320)",
+          "oklch(0.5 0.122 320)",
+          "oklch(0.62 0.122 320)",
+          "oklch(0.74 0.107 320)",
+          "oklch(0.86 0.092 320)",
+          "oklch(0.95 0.08 320)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Trainer page headings; balanced wrap."
+      },
+      "heading": {
+        "displayName": "Heading",
+        "purpose": "Student and error page headings, \"Alles geschafft!\", auth wordmark (raspberry) and card titles."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Trainer section headings and the empty-state title."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Exercise card titles and the \"von N erledigt\" progress tail; category headings use 800 at this size."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Descriptions and form text; tabular numerals."
+      },
+      "numeral": {
+        "displayName": "Numeral",
+        "purpose": "The done count in the student progress card."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Nav links, counts, status lines, badges."
+      },
+      "button": {
+        "displayName": "Button",
+        "purpose": "All button text."
+      }
+    },
+    "shadows": [
+      {
+        "name": "surface",
+        "value": "0 1px 2px hsl(var(--shadow-color) / 0.06), 0 6px 16px -4px hsl(var(--shadow-color) / 0.08)",
+        "purpose": "Every raised white surface. --shadow-color is 345 40% 25% (light), 345 50% 4% (dark)."
+      },
+      {
+        "name": "primary-press",
+        "value": "0 2px 6px -1px hsl(var(--shadow-color) / 0.25)",
+        "purpose": "Under the primary button."
+      },
+      {
+        "name": "play-disc",
+        "value": "0 4px 16px -2px hsl(var(--shadow-color) / 0.45)",
+        "purpose": "Under the raspberry play disc on video posters."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-enter",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Entrances and growth (Tailwind utility ease-enter)."
+      },
+      {
+        "name": "ease-exit",
+        "value": "cubic-bezier(0.3, 0, 0.8, 0.15)",
+        "purpose": "Exits; always shorter than the matching entrance (utility ease-exit)."
+      },
+      {
+        "name": "ease-move",
+        "value": "cubic-bezier(0.2, 0, 0, 1)",
+        "purpose": "On-screen moves, e.g. the check-off morph group (utility ease-move)."
+      },
+      {
+        "name": "control-state",
+        "value": "150ms",
+        "purpose": "Button background, color, shadow and 1px press transform."
+      },
+      {
+        "name": "checkoff-morph",
+        "value": "view-transition group 380ms ease-move; new snapshot opaque (no fade, mix-blend normal); old snapshot fades 120ms; lift z-index 2, headings z-index 1; root crossfade 180ms",
+        "purpose": "Exercise card <-> done row via React <ViewTransition> (share \"morph lift\"); category headings named so they travel. Off under reduced motion (old snapshot hidden)."
+      },
+      {
+        "name": "celebrate-swap",
+        "value": "view-transition group 380ms ease-move; old fades 160ms ease-exit; new pops from scale 0.94, 420ms ease-enter, 120ms delay",
+        "purpose": "Progress card <-> all-done card (share \"celebrate\" / \"progress-swap\"); off under reduced motion."
+      },
+      {
+        "name": "celebrate-burst",
+        "value": "one 4px ring, scale 1 -> 1.9, opacity 0.7 -> 0, 700ms ease-enter, 380ms delay",
+        "purpose": "All-done disc, only right after a real tick (never on load); hidden under reduced motion."
+      },
+      {
+        "name": "smooth-scroll",
+        "value": "html scroll-behavior: smooth",
+        "purpose": "\"Nächste Übung\" scroll; auto under reduced motion."
+      },
+      {
+        "name": "details-open",
+        "value": "block-size 360ms ease-enter, opacity 240ms ease-out",
+        "purpose": "Done row open/close where interpolate-size is supported; off under reduced motion."
+      },
+      {
+        "name": "again-label",
+        "value": "opacity + visibility 200ms",
+        "purpose": "\"Nochmal ansehen\" fades out while the row is open."
+      },
+      {
+        "name": "progress-fill",
+        "value": "width 500ms ease-enter",
+        "purpose": "Progress bar fill growth; off under reduced motion."
+      },
+      {
+        "name": "done-check",
+        "value": "zoom-in from 50%, 300ms ease-enter",
+        "purpose": "Check icon entering the 28px disc of the \"Erledigt\" status; off under reduced motion."
+      },
+      {
+        "name": "toast-in",
+        "value": "fade + slide-in-from-bottom 16px, 300ms ease-enter, 400ms delay",
+        "purpose": "Progress toast entry after the morph lands; off under reduced motion."
+      },
+      {
+        "name": "toast-out",
+        "value": "fade + slide-out-to-bottom 8px, 200ms ease-exit",
+        "purpose": "Progress toast exit after 6s with the \"Nächste Übung\" button (3.7s without), held while hovered or focused; off under reduced motion."
+      },
+      {
+        "name": "poster-fade",
+        "value": "opacity 300ms ease-enter",
+        "purpose": "Video thumbnail fades in on load; the player fades in 300ms after the tap."
+      },
+      {
+        "name": "play-disc",
+        "value": "transform 200ms ease-enter, scale 1.05 hover / 0.95 press",
+        "purpose": "Video poster play disc; off under reduced motion."
+      },
+      {
+        "name": "chevron",
+        "value": "rotate 180deg, 150ms",
+        "purpose": "Finished-row chevron on open; off under reduced motion."
+      },
+      {
+        "name": "skeleton-pulse",
+        "value": "animate-pulse",
+        "purpose": "Loading placeholders; off under reduced motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Main action on forms and dialogs.",
+      "html": "<button class=\"ds-btn ds-btn-primary\">Anlegen</button>",
+      "css": ".ds-btn { font-family: var(--font-sans), Figtree, ui-sans-serif, system-ui, sans-serif; display:inline-flex; align-items:center; justify-content:center; gap:8px; height:44px; padding:0 16px; border:1px solid transparent; border-radius:var(--radius); font-size:15px; font-weight:600; cursor:pointer; transition: background-color 150ms, color 150ms, box-shadow 150ms, transform 150ms; } .ds-btn:focus-visible { outline:none; border-color: var(--ring); box-shadow: 0 0 0 3px color-mix(in oklch, var(--ring) 50%, transparent); } .ds-btn:active { transform: translateY(1px); } .ds-btn-primary { background: var(--primary); color: var(--primary-foreground); box-shadow: 0 2px 6px -1px hsl(var(--shadow-color) / 0.25); } .ds-btn-primary:hover { background: color-mix(in oklch, var(--primary) 90%, transparent); }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Neutral action, such as cancel.",
+      "html": "<button class=\"ds-btn ds-btn-outline\">Abbrechen</button>",
+      "css": ".ds-btn { font-family: var(--font-sans), Figtree, ui-sans-serif, system-ui, sans-serif; display:inline-flex; align-items:center; justify-content:center; gap:8px; height:44px; padding:0 16px; border:1px solid transparent; border-radius:var(--radius); font-size:15px; font-weight:600; cursor:pointer; transition: background-color 150ms, color 150ms, box-shadow 150ms, transform 150ms; } .ds-btn:focus-visible { outline:none; border-color: var(--ring); box-shadow: 0 0 0 3px color-mix(in oklch, var(--ring) 50%, transparent); } .ds-btn:active { transform: translateY(1px); } .ds-btn-outline { background: var(--card); color: var(--foreground); border-color: var(--input); } .ds-btn-outline:hover { background: var(--muted); }"
+    },
+    {
+      "name": "Done Toggle",
+      "kind": "custom",
+      "refersTo": "done-status",
+      "description": "Open: full-width primary \"Als erledigt markieren\". Done: unboxed plum status \"Erledigt\" plus a ghost \"Rückgängig\" in Done Plum Ink.",
+      "html": "<div style=\"display:grid;gap:12px;width:320px\"><button class=\"ds-btn ds-btn-primary ds-done\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\"><circle cx=\"12\" cy=\"12\" r=\"10\"/></svg>Als erledigt markieren</button><div class=\"ds-donestate\"><p class=\"ds-status\"><span class=\"ds-sdisc\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M20 6 9 17l-5-5\"/></svg></span>Erledigt</p><button class=\"ds-btn ds-btn-ghost\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M9 14 4 9l5-5\"/><path d=\"M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11\"/></svg>Rückgängig</button></div></div>",
+      "css": ".ds-btn { font-family: var(--font-sans), Figtree, ui-sans-serif, system-ui, sans-serif; display:inline-flex; align-items:center; justify-content:center; gap:8px; height:44px; padding:0 16px; border:1px solid transparent; border-radius:var(--radius); font-size:15px; font-weight:600; cursor:pointer; background:transparent; transition: background-color 150ms, color 150ms, box-shadow 150ms, transform 150ms; } .ds-btn:focus-visible { outline:none; border-color: var(--ring); box-shadow: 0 0 0 3px color-mix(in oklch, var(--ring) 50%, transparent); } .ds-btn:active { transform: translateY(1px); } .ds-done { width:100%; } .ds-btn-primary { background: var(--primary); color: var(--primary-foreground); box-shadow: 0 2px 6px -1px hsl(var(--shadow-color) / 0.25); } .ds-btn-primary:hover { background: color-mix(in oklch, var(--primary) 90%, transparent); } .ds-donestate { display:flex; gap:8px; } .ds-status { flex:1; display:flex; align-items:center; gap:8px; height:44px; margin:0; font-family: var(--font-sans), Figtree, ui-sans-serif, system-ui, sans-serif; font-weight:700; color: var(--success-ink); } .ds-sdisc { display:grid; place-items:center; width:28px; height:28px; border-radius:9999px; background: var(--success); color: var(--success-foreground); } .ds-btn-ghost { color: var(--success-ink); } .ds-btn-ghost:hover { background: var(--muted); }"
+    },
+    {
+      "name": "Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Text field for forms.",
+      "html": "<input class=\"ds-input\" placeholder=\"Titel der Übung\">",
+      "css": ".ds-input { font-family: var(--font-sans), Figtree, ui-sans-serif, system-ui, sans-serif; height:44px; width:280px; padding:4px 14px; border:1px solid var(--input); border-radius: var(--radius); background: var(--card); color: var(--foreground); font-size:16px; outline:none; transition: border-color 150ms, box-shadow 150ms; } .ds-input::placeholder { color: var(--muted-foreground); } .ds-input:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 3px color-mix(in oklch, var(--ring) 50%, transparent); }"
+    },
+    {
+      "name": "Nav Links",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "Trainer section pills in the sticky nav.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-link\" aria-current=\"page\" href=\"#\">Übungen</a><a class=\"ds-nav-link\" href=\"#\">Schüler</a><a class=\"ds-nav-link\" href=\"#\">Gruppen</a></nav>",
+      "css": ".ds-nav { font-family: var(--font-sans), Figtree, ui-sans-serif, system-ui, sans-serif; display:flex; gap:4px; } .ds-nav-link { display:inline-flex; align-items:center; min-height:44px; padding:0 16px; border-radius:9999px; font-size:14px; font-weight:600; color: var(--muted-foreground); text-decoration:none; transition: background-color 150ms, color 150ms; } .ds-nav-link:hover { background: var(--muted); color: var(--foreground); } .ds-nav-link[aria-current] { background: var(--secondary); color: var(--secondary-foreground); }"
+    },
+    {
+      "name": "Category Badge",
+      "kind": "chip",
+      "refersTo": "badge",
+      "description": "Category label in trainer lists.",
+      "html": "<span class=\"ds-badge\">Technik</span>",
+      "css": ".ds-badge { font-family: var(--font-sans), Figtree, ui-sans-serif, system-ui, sans-serif; display:inline-flex; align-items:center; height:24px; padding:2px 10px; border-radius:9999px; font-size:12px; font-weight:600; background: var(--secondary); color: var(--secondary-foreground); }"
+    },
+    {
+      "name": "Progress Card",
+      "kind": "card",
+      "refersTo": "surface",
+      "description": "Student's done count as a big numeral, \"von N erledigt\", over a plum progress bar.",
+      "html": "<section class=\"ds-surface ds-progress\"><p class=\"ds-title\"><span class=\"ds-num\">1</span><span class=\"ds-dim\"> von 2</span> erledigt</p><div class=\"ds-track\"><div class=\"ds-fill\" style=\"width:50%\"></div></div></section>",
+      "css": ".ds-surface { background: var(--card); color: var(--card-foreground); border:1px solid var(--border); border-radius: calc(var(--radius) * 1.4); box-shadow: 0 1px 2px hsl(var(--shadow-color) / 0.06), 0 6px 16px -4px hsl(var(--shadow-color) / 0.08); } .ds-progress { font-family: var(--font-sans), Figtree, ui-sans-serif, system-ui, sans-serif; width:320px; padding:20px; display:grid; gap:12px; } .ds-title { margin:0; font-size:18px; font-weight:700; } .ds-num { font-size:36px; font-weight:800; letter-spacing:-0.025em; } .ds-dim { color: var(--muted-foreground); } .ds-track { height:16px; border-radius:9999px; background: var(--muted); overflow:hidden; } .ds-fill { height:100%; border-radius:9999px; background: var(--success); transition: width 500ms cubic-bezier(0.16,1,0.3,1); }"
+    },
+    {
+      "name": "Finished Exercise Row",
+      "kind": "custom",
+      "refersTo": "done-row",
+      "description": "Collapsed details row for a finished exercise; expands to video, description and toggle.",
+      "html": "<details class=\"ds-surface ds-donerow\"><summary><span class=\"ds-ink\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M20 6 9 17l-5-5\"/></svg></span><span class=\"ds-t\">Tägliches Dehnen</span><span class=\"ds-ink ds-again\">Nochmal ansehen</span><span class=\"ds-ink ds-chev\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"m6 9 6 6 6-6\"/></svg></span></summary><p style=\"margin:0;padding:16px;color:var(--muted-foreground)\">10 Minuten vor jedem Training.</p></details>",
+      "css": ".ds-surface { background: var(--card); color: var(--card-foreground); border:1px solid var(--border); border-radius: calc(var(--radius) * 1.4); box-shadow: 0 1px 2px hsl(var(--shadow-color) / 0.06), 0 6px 16px -4px hsl(var(--shadow-color) / 0.08); } .ds-donerow { font-family: var(--font-sans), Figtree, ui-sans-serif, system-ui, sans-serif; width:320px; overflow:hidden; background: var(--success-soft); border-color: color-mix(in oklch, var(--success) 40%, transparent); } .ds-donerow summary { display:flex; align-items:center; gap:12px; min-height:56px; padding:12px 16px; cursor:pointer; list-style:none; box-sizing:border-box; } .ds-donerow summary::-webkit-details-marker { display:none; } .ds-ink { color: var(--success-ink); display:flex; } .ds-t { flex:1; font-weight:700; } .ds-again { font-size:14px; font-weight:600; } .ds-again { transition: opacity 200ms, visibility 200ms; } .ds-donerow[open] .ds-again { opacity:0; visibility:hidden; } .ds-donerow:hover { border-color: color-mix(in oklch, var(--success) 70%, transparent); } .ds-chev { transition: transform 150ms; } .ds-donerow[open] .ds-chev { transform: rotate(180deg); }"
+    },
+    {
+      "name": "Progress Toast",
+      "kind": "custom",
+      "refersTo": "progress-toast",
+      "description": "Bottom status toast after a check-off: plum check disc, count, thin bar and a primary 44px \"Nächste Übung\" button; no toast when everything is done.",
+      "html": "<div class=\"ds-surface ds-toast\"><span class=\"ds-disc\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M20 6 9 17l-5-5\"/></svg></span><div class=\"ds-tb\"><p>2 von 5 erledigt</p><div class=\"ds-track\"><div class=\"ds-fill\" style=\"width:40%\"></div></div></div><button class=\"ds-next\">Nächste Übung<svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 5v14\"/><path d=\"m19 12-7 7-7-7\"/></svg></button></div>",
+      "css": ".ds-surface { background: var(--card); color: var(--card-foreground); border:1px solid var(--border); border-radius: calc(var(--radius) * 1.4); box-shadow: 0 1px 2px hsl(var(--shadow-color) / 0.06), 0 6px 16px -4px hsl(var(--shadow-color) / 0.08); } .ds-toast { font-family: var(--font-sans), Figtree, ui-sans-serif, system-ui, sans-serif; width:320px; padding:12px 12px 12px 16px; display:flex; align-items:center; gap:12px; } .ds-disc { display:grid; place-items:center; width:40px; height:40px; flex-shrink:0; border-radius:9999px; background: var(--success); color: var(--success-foreground); } .ds-tb { flex:1; display:grid; gap:6px; } .ds-tb p { margin:0; font-weight:700; } .ds-track { height:8px; border-radius:9999px; background: var(--muted); overflow:hidden; } .ds-fill { height:100%; border-radius:9999px; background: var(--success); } .ds-next { display:inline-flex; align-items:center; gap:6px; height:36px; padding:0 12px; flex-shrink:0; border:0; border-radius: min(calc(var(--radius) * 0.8), 10px); background: var(--primary); color: var(--primary-foreground); font: 600 14px var(--font-sans), Figtree, sans-serif; box-shadow: 0 2px 6px -1px hsl(var(--shadow-color) / 0.25); cursor:pointer; }"
+    },
+    {
+      "name": "Video Poster",
+      "kind": "custom",
+      "refersTo": "play-disc",
+      "description": "Thumbnail with a 64px raspberry play disc; the player loads on tap.",
+      "html": "<div class=\"ds-poster\"><span class=\"ds-play\"><svg width=\"28\" height=\"28\" viewBox=\"0 0 24 24\" fill=\"currentColor\" style=\"margin-left:4px\"><path d=\"M6 4l14 8-14 8z\"/></svg></span></div>",
+      "css": ".ds-poster { width:320px; aspect-ratio:16/9; border-radius:calc(var(--radius) * 1.85); background: var(--muted); display:grid; place-items:center; } .ds-play { display:grid; place-items:center; width:64px; height:64px; border-radius:9999px; background: var(--primary); color: var(--primary-foreground); box-shadow: 0 4px 16px -2px hsl(var(--shadow-color) / 0.45); transition: transform 200ms cubic-bezier(0.16,1,0.3,1); } .ds-poster:hover .ds-play { transform: scale(1.05); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Practice Card",
+    "overview": "A friendly, category-standard learning app built to the craft bar of the best consumer learning products. Every screen is a stack of soft white cards on a warm blush ground, and the first thing a student sees is how much is done. One committed raspberry carries brand and action; plum appears only when something is finished, so checking off an exercise visibly changes the page: the card itself turns into its plum done row.\n\nDensity is relaxed and thumb-first: 44px controls, a full-width check-off button on every open exercise, open work shown in full while finished work folds away, a single narrow reading column for students and a list-plus-form split for trainers. Type is a single family, Figtree, with heavy 800 page headings and bold 700 section and card titles, so hierarchy comes from weight rather than size jumps. Every neutral is tinted from the blush hue; there is no flat grey in the system.\n\nThe system deliberately replaces shadcn's stock neutral theme (Geist, near-black primary, hairline flat cards): the components keep their shadcn structure but every token, radius and shadow is restyled.",
+    "keyCharacteristics": [
+      "Warm blush ground, white raised surfaces, plum-ink text and blush-tinted borders.",
+      "One raspberry action color; plum reserved exclusively for \"done\"; brick red for delete, kept visibly apart from the brand.",
+      "Figtree throughout; 800 for page headings, 700 for titles, 600 for labels and buttons.",
+      "Two corners: about 17px on cards and surfaces, 12px on controls; pills for chips and nav.",
+      "Soft, blush-tinted ambient shadows; never hard offsets.",
+      "44px minimum touch targets.",
+      "Motion that explains state: the check-off morph, rows that open smoothly, one celebration burst when the last exercise is ticked, entrances that decelerate and exits that are shorter.",
+      "Nothing moves under the thumb: once a student starts a video or ticks something, the page order holds still until the next visit."
+    ],
+    "rules": [
+      {
+        "name": "The Plum Means Done Rule",
+        "body": "Plum (`success*`) marks completion and nothing else: no plum for \"save\", links, generic success toasts, or decoration. The check-off progress toast is plum because it reports completion, not because an action succeeded. Its scarcity is what makes ticking an exercise feel like progress.",
+        "section": "colors"
+      },
+      {
+        "name": "The No Grey Rule",
+        "body": "Every neutral carries blush chroma (hue 350). Never introduce a zero-chroma grey; pure white is allowed only for raised surfaces.",
+        "section": "colors"
+      },
+      {
+        "name": "The Brick Is Not Brand Rule",
+        "body": "Destructive stays on the brick hue (28), never on the raspberry hue, so a delete action can't be mistaken for the primary action.",
+        "section": "colors"
+      },
+      {
+        "name": "The Weight Not Size Rule",
+        "body": "Hierarchy steps by weight (800 / 700 / 600 / 400) over a narrow size range (0.75rem to 1.875rem). The one exception is the Numeral: on the student home the done count outranks the greeting, because progress is the first thing a student should see. Don't add other large sizes or a second family.",
+        "section": "typography"
+      },
+      {
+        "name": "The Soft Lift Rule",
+        "body": "Shadows are diffuse, tinted with the blush shadow color, and offset only downward by a few pixels. Never a hard, zero-blur offset.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do put every content group on a white surface with the Surface shadow and 1px hairline.",
+      "Do keep all touch targets at least 44px tall.",
+      "Do use plum only for completion: the progress fill, the done status, done rows, the all-done card, check discs and done counts.",
+      "Do show open work in full and fold finished work into a row that can be reopened.",
+      "Do keep the layout still once a student is working: freeze ordering on the first play or tick, and move focus to the new control when an element is replaced.",
+      "Do tint every new neutral from blush hue 350.",
+      "Do use the enter curve for appearing, the exit curve (shorter) for leaving, and the move curve for things changing place.",
+      "Do honor reduced motion: the check-off morph, row open/close, progress fill, check zoom, all-done swap and burst ring, toast enter/exit, smooth scrolling, poster and player fades, label fade, chevron turn, play-disc scale and skeleton pulse all switch off under `prefers-reduced-motion`."
+    ],
+    "donts": [
+      "Don't use plum for generic success, save confirmation or decoration, and don't bring back green for \"done\".",
+      "Don't put destructive actions on the raspberry hue; delete stays brick.",
+      "Don't introduce flat greys, near-black primaries, or the stock shadcn neutral theme.",
+      "Don't use a second typeface or system display fonts; Figtree carries every role.",
+      "Don't use hard, zero-blur offset shadows.",
+      "Don't add uppercase eyebrows or kicker labels above headings; headings stand alone."
+    ]
+  }
+}
