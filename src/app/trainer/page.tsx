@@ -24,7 +24,7 @@ export default async function TrainerExercises() {
   ]);
 
   return (
-    <main className="mx-auto w-full max-w-5xl space-y-4 px-4 pt-6 pb-16">
+    <main className="mx-auto w-full max-w-5xl space-y-6 px-4 pt-6 pb-16">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-3xl font-extrabold tracking-tight">Übungen</h1>
         <CreateDialog label="Neue Übung" title="Neue Übung" description="Der nächste fällige Plan ist schon gewählt." action={createExercise}>

@@ -111,6 +111,7 @@ export function DataTable<T extends RowData>({
                     <TableCell
                       key={cell.id}
                       className={cn(
+                        "h-14", // one row height whether or not a cell holds a chip
                         cell.column.id === "actions" ? "w-px px-2 text-right whitespace-nowrap" : "px-4",
                         i === 0 && "whitespace-normal", // the title cell carries the phone subline; let it wrap
                         mobileHidden.includes(cell.column.id) && "max-sm:hidden",

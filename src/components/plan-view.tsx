@@ -32,37 +32,41 @@ export async function PlanView({
 
   return (
     <>
-      <div className="space-y-1">
-        <h2 className="text-2xl font-extrabold tracking-tight text-balance">{plan.title}</h2>
-        <p className="text-muted-foreground">
-          {past ? `Vorbei seit ${formatDue(plan.dueDate)}` : `Bis ${formatDue(plan.dueDate)}`}
-          {` · von ${plan.trainer ?? "deinem Trainer"}`}
-        </p>
-      </div>
+      {/* title and progress belong together; categories keep the wider rhythm below */}
+      <div className="space-y-4">
+        <div className="space-y-1">
+          <h2 className="text-2xl font-extrabold tracking-tight text-balance">{plan.title}</h2>
+          <p className="text-muted-foreground">
+            {past ? `Vorbei seit ${formatDue(plan.dueDate)}` : `Bis ${formatDue(plan.dueDate)}`}
+            {` · von ${plan.trainer ?? "deinem Trainer"}`}
+          </p>
+        </div>
 
-      {exercises.length === 0 ? (
-        <p className="text-muted-foreground">Dieser Plan hat noch keine Übungen.</p>
-      ) : open === 0 ? (
-        <ViewTransition name={`progress-card-${plan.id}`} share="celebrate" default="none">
-          <section aria-label="Fortschritt" className="surface flex items-center gap-4 border-success/40 bg-success-soft p-5">
-            <CelebrateDisc />
-            <div className="space-y-1">
-              <p className="text-2xl font-extrabold tracking-tight text-success-ink">Alles geschafft!</p>
-              <p className="text-pretty text-success-ink">Alle {exercises.length} Übungen erledigt.</p>
-            </div>
-          </section>
-        </ViewTransition>
-      ) : (
-        <ViewTransition name={`progress-card-${plan.id}`} share="progress-swap" default="none">
-          <section aria-label="Fortschritt" className="surface space-y-3 p-5">
-            <p className="text-lg font-bold">
-              <span className="text-4xl font-extrabold tracking-tight">{done}</span>
-              <span className="text-muted-foreground"> von {exercises.length}</span> erledigt
-            </p>
-            <ProgressBar done={done} total={exercises.length} />
-          </section>
-        </ViewTransition>
-      )}
+        {exercises.length === 0 ? (
+          <p className="text-muted-foreground">Dieser Plan hat noch keine Übungen.</p>
+        ) : open === 0 ? (
+          <ViewTransition name={`progress-card-${plan.id}`} share="celebrate" default="none">
+            <section aria-label="Fortschritt" className="surface flex items-center gap-4 border-success/40 bg-success-soft p-5">
+              <CelebrateDisc />
+              <div className="space-y-1">
+                <p className="text-2xl font-extrabold tracking-tight text-success-ink">Alles geschafft!</p>
+                <p className="text-pretty text-success-ink">Alle {exercises.length} Übungen erledigt.</p>
+              </div>
+            </section>
+          </ViewTransition>
+        ) : (
+          <ViewTransition name={`progress-card-${plan.id}`} share="progress-swap" default="none">
+            <section aria-label="Fortschritt" className="surface space-y-3 p-5">
+              <p className="text-lg font-bold">
+                <span className="text-4xl font-extrabold tracking-tight">{done}</span>
+                <span className="text-muted-foreground"> von {exercises.length}</span> erledigt
+              </p>
+              <ProgressBar done={done} total={exercises.length} />
+            </section>
+          </ViewTransition>
+        )}
+
+      </div>
 
       <ExerciseList planId={plan.id} groups={groups} past={past} />
       {!past && <ProgressToast done={done} total={exercises.length} nextId={next && `${plan.id}-${next.id}`} />}

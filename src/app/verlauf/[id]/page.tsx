@@ -12,7 +12,7 @@ export default async function PastPlanPage({ params }: PageProps<"/verlauf/[id]"
   if (!plan) notFound();
   return (
     <main className="mx-auto w-full max-w-2xl space-y-8 px-4 pt-6 pb-16">
-      <div className="space-y-2">
+      <div className="mb-4">{/* overrides space-y-8: the back link sits close to the plan */}
         <Link href="/verlauf" className="-ml-1 inline-flex min-h-11 items-center gap-1.5 px-1 font-semibold text-primary underline-offset-4 hover:underline">
           <ArrowLeft aria-hidden className="size-4" />
           Frühere Pläne

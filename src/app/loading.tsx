@@ -7,17 +7,20 @@ const Line = ({ h, w }: { h: string; w: string }) => (
   </div>
 );
 
-/** Mirrors the student home: greeting, progress card, one category with an open card and a finished row. */
+/** Mirrors the student home: greeting, then one plan (title, progress card, a category with an open card and a finished row). */
 export default function Loading() {
   return (
     <LoadingMain className="mx-auto w-full max-w-2xl space-y-8 px-4 pt-6 pb-16">
-      <div className="space-y-1">
-        <Line h="h-8" w="w-36" />
-        <Line h="h-6" w="w-64 max-w-full" />
-      </div>
-      <div className="surface space-y-3 p-5">
-        <Line h="h-10" w="w-40" />
-        <Skeleton className="h-4 w-full rounded-full" />
+      <Line h="h-9" w="w-40" />
+      <div className="space-y-4">
+        <div className="space-y-1">
+          <Line h="h-8" w="w-32" />
+          <Line h="h-6" w="w-64 max-w-full" />
+        </div>
+        <div className="surface space-y-3 p-5">
+          <Line h="h-10" w="w-40" />
+          <Skeleton className="h-4 w-full rounded-full" />
+        </div>
       </div>
       <section className="space-y-3">
         <Line h="h-7" w="w-32" />

@@ -24,7 +24,7 @@ export default async function Home({ searchParams }: PageProps<"/">) {
 
   return (
     <main className="mx-auto w-full max-w-2xl space-y-8 px-4 pt-6 pb-16">
-      <h1 className="text-2xl font-extrabold tracking-tight">Hallo, {firstName}!</h1>
+      <h1 className="text-3xl font-extrabold tracking-tight">Hallo, {firstName}!</h1>
 
       {willkommen && (
         <section aria-label="Willkommen" className="surface space-y-1 border-primary/30 bg-secondary p-5 text-secondary-foreground">

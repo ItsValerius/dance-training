@@ -116,7 +116,7 @@ export function PlansTable({ plans }: { plans: PlanRow[] }) {
                   aria-pressed={show === v}
                   onClick={() => setShow(v)}
                   className={cn(
-                    "inline-flex min-h-11 items-center gap-1.5 rounded-full px-4 text-sm font-semibold transition-colors",
+                    "inline-flex min-h-10 items-center gap-1.5 rounded-full px-4 text-sm font-semibold transition-colors",
                     show === v ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground",
                   )}
                 >

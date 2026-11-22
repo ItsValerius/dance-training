@@ -80,7 +80,7 @@ export function StudentsTable({ students, groups }: { students: StudentRow[]; gr
             <Input placeholder="Suchen" aria-label="Name oder E-Mail suchen" value={(person?.getFilterValue() as string) ?? ""} onChange={(e) => person?.setFilterValue(e.target.value)} className="min-w-0 flex-1 sm:max-w-xs" />
             {groups.length > 0 && (
               <Select items={items} value={(group?.getFilterValue() as string[] | undefined)?.[0] ?? ALL} onValueChange={(v) => group?.setFilterValue(v === ALL ? undefined : [v])}>
-                <SelectTrigger aria-label="Nach Gruppe filtern" className="max-w-[45%] shrink-0 sm:min-w-40">
+                <SelectTrigger aria-label="Nach Gruppe filtern" className="shrink-0 sm:min-w-40">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>

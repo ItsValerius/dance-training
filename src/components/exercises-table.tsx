@@ -21,7 +21,7 @@ const columns = helper.columns([
         </Link>
         <span className="flex w-full items-center gap-2 text-sm text-muted-foreground sm:hidden">
           {row.original.categories.map((c) => <Badge key={c} variant="secondary">{c}</Badge>)}
-          in {row.original.plans} {row.original.plans === 1 ? "Plan" : "Plänen"}
+          {row.original.plans === 0 ? "in keinem Plan" : `in ${row.original.plans} ${row.original.plans === 1 ? "Plan" : "Plänen"}`}
         </span>
       </span>
     ),
@@ -55,7 +55,7 @@ export function ExercisesTable({ exercises, categories }: { exercises: ExerciseR
           <>
             <Input placeholder="Titel suchen" aria-label="Titel suchen" value={(title?.getFilterValue() as string) ?? ""} onChange={(e) => title?.setFilterValue(e.target.value)} className="min-w-0 flex-1 sm:max-w-xs" />
             <Select items={items} value={(category?.getFilterValue() as string[] | undefined)?.[0] ?? ALL} onValueChange={(v) => category?.setFilterValue(v === ALL ? undefined : [v])}>
-              <SelectTrigger aria-label="Kategorie filtern" className="max-w-[45%] shrink-0 sm:min-w-44">
+              <SelectTrigger aria-label="Kategorie filtern" className="shrink-0 sm:min-w-44">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>

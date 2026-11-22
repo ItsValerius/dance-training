@@ -27,7 +27,7 @@ export default async function PlansPage() {
   const t = today();
 
   return (
-    <main className="mx-auto w-full max-w-5xl space-y-4 px-4 pt-6 pb-16">
+    <main className="mx-auto w-full max-w-5xl space-y-6 px-4 pt-6 pb-16">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-3xl font-extrabold tracking-tight">Trainingspläne</h1>
         <CreateDialog label="Neuer Plan" title="Neuer Trainingsplan" action={createPlan}>
