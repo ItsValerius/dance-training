@@ -7,7 +7,10 @@ const Line = ({ h, w }: { h: string; w: string }) => (
   </div>
 );
 
-/** Mirrors the student home: greeting, then one plan (title, progress card, a category with an open card and a finished row). */
+/**
+ * Only what every student sees, whatever their state: the greeting, a plan title and one card (progress,
+ * "Alles geschafft!" or the empty state). Exercise cards are left out: an all-done student has none.
+ */
 export default function Loading() {
   return (
     <LoadingMain className="mx-auto w-full max-w-2xl space-y-8 px-4 pt-6 pb-16">
@@ -22,17 +25,6 @@ export default function Loading() {
           <Skeleton className="h-4 w-full rounded-full" />
         </div>
       </div>
-      <section className="space-y-3">
-        <Line h="h-7" w="w-32" />
-        <div className="surface flex flex-col overflow-hidden">
-          <Skeleton className="aspect-video w-full rounded-none" />
-          <div className="space-y-3 p-4">
-            <Line h="h-7" w="w-3/4" />
-            <Skeleton className="h-11 w-full" />
-          </div>
-        </div>
-        <Skeleton className="h-14 w-full rounded-[calc(var(--radius)*1.4)]" />
-      </section>
     </LoadingMain>
   );
 }
