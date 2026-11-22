@@ -18,21 +18,34 @@ export function LoadingMain({ className, children }: ComponentProps<"main">) {
   );
 }
 
-/** Suspense fallback for a trainer list: toolbar plus table rows, inside a page whose heading is already there. */
-export function TableSkeleton({ rows = 4 }: { rows?: number }) {
+/**
+ * Suspense fallback for a trainer table. Only what every state shows: the toolbar (search + filter) and the
+ * table with its header and one row (real data or the "Noch keine …" line); further rows simply appear.
+ */
+export function TableSkeleton() {
   return (
     <div role="status" aria-live="polite" className="space-y-3">
       <span className="sr-only">Lädt…</span>
-      <Skeleton className="h-11 w-full max-w-xs" />
+      <div aria-hidden className="flex gap-2 sm:gap-4">
+        <Skeleton className="h-11 min-w-0 flex-1 sm:max-w-xs" />
+        <Skeleton className="h-11 w-36 shrink-0" />
+      </div>
       <div aria-hidden className="surface divide-y overflow-hidden">
         <div className="h-12" />
-        {Array.from({ length: rows }, (_, i) => (
-          <div key={i} className="flex h-14 items-center gap-3 px-4">
-            <Skeleton className="h-5 w-40 rounded-full" />
-            <Skeleton className="ml-auto h-5 w-28 rounded-full" />
-          </div>
-        ))}
+        <div className="flex h-14 items-center px-4">
+          <Skeleton className="h-5 w-40 rounded-full" />
+        </div>
       </div>
+    </div>
+  );
+}
+
+/** One line of text: for spots that hold either a list or a single "Noch keine …" sentence. */
+export function LineSkeleton({ className }: { className?: string }) {
+  return (
+    <div role="status" aria-live="polite" className={cn("flex h-6 items-center", className)}>
+      <span className="sr-only">Lädt…</span>
+      <Skeleton className="h-4 w-48 rounded-full" />
     </div>
   );
 }

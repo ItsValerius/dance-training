@@ -8,7 +8,7 @@ import { ConfirmDelete } from "@/components/confirm-delete";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Skeleton } from "@/components/skeleton";
+import { LineSkeleton } from "@/components/skeleton";
 
 type Group = { id: string; name: string; members: number };
 
@@ -32,13 +32,7 @@ export function GroupsDialog({ groups }: { groups: Promise<Group[]> }) {
           <Input name="name" placeholder="Neue Gruppe" aria-label="Name der neuen Gruppe" required maxLength={100} />
           <Button type="submit" className="shrink-0">Anlegen</Button>
         </ActionForm>
-        <Suspense
-          fallback={
-            <div className="surface divide-y">
-              {[0, 1].map((i) => <div key={i} className="flex min-h-12 items-center px-4"><Skeleton className="h-5 w-32 rounded-full" /></div>)}
-            </div>
-          }
-        >
+        <Suspense fallback={<LineSkeleton />}>
           <GroupList groups={groups} />
         </Suspense>
       </DialogContent>

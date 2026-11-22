@@ -37,12 +37,13 @@ async function fieldOptions() {
   return { categories, plans };
 }
 
+// the create form always has these five fields; the description is a taller textarea
 const FieldsSkeleton = () => (
   <div className="grid gap-3">
-    {[0, 1, 2, 3].map((i) => (
+    {["h-11", "h-11", "h-11", "h-24", "h-11"].map((h, i) => (
       <div key={i} className="grid gap-1.5">
         <Skeleton className="h-4 w-24 rounded-full" />
-        <Skeleton className="h-11" />
+        <Skeleton className={h} />
       </div>
     ))}
   </div>

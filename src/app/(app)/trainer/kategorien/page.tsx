@@ -2,7 +2,7 @@ import { asc, count, eq } from "drizzle-orm";
 import { Suspense } from "react";
 import { CreateDialog } from "@/components/create-dialog";
 import { ConfirmDelete } from "@/components/confirm-delete";
-import { Skeleton } from "@/components/skeleton";
+import { LineSkeleton } from "@/components/skeleton";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { db } from "@/db";
@@ -23,24 +23,12 @@ export default function CategoriesPage() {
         </CreateDialog>
       </div>
       {/* only the data waits; heading and create button are in the static shell */}
-      <Suspense fallback={<ListSkeleton />}>
+      <Suspense fallback={<LineSkeleton />}>
         <Categories />
       </Suspense>
     </main>
   );
 }
-
-const ListSkeleton = () => (
-  <div role="status" aria-live="polite" className="surface divide-y overflow-hidden">
-    <span className="sr-only">Lädt…</span>
-    {[0, 1, 2].map((i) => (
-      <div key={i} aria-hidden className="flex min-h-14 items-center px-4">
-        <Skeleton className="h-5 w-40 rounded-full" />
-        <Skeleton className="ml-auto h-4 w-16 rounded-full" />
-      </div>
-    ))}
-  </div>
-);
 
 async function Categories() {
   await requireTrainer();
