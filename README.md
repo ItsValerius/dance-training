@@ -27,7 +27,7 @@ All trainers share the same students, groups and exercises (one club).
 
 ## Mail
 
-Set `SMTP_URL` (e.g. `smtps://user:pass@host:465`) and `MAIL_FROM` in `.env`. Without `SMTP_URL`, mails are printed to the server log. `BETTER_AUTH_URL` must be the public URL, since links in mails are built from it.
+Set `SMTP_URL` (e.g. `smtps://user:pass@host:465`) and `MAIL_FROM` in `.env`. Without `SMTP_URL`, mails are printed to the server log in development; in production sending fails instead. `BETTER_AUTH_URL` must be the public URL, since links in mails are built from it.
 
 ## Database changes
 

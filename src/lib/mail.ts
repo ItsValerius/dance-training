@@ -5,7 +5,8 @@ const transport = process.env.SMTP_URL ? nodemailer.createTransport(process.env.
 
 export async function sendMail(to: string, subject: string, text: string) {
   if (!transport) {
-    // shortcut: without SMTP_URL mails only go to the server log; set SMTP_URL before going live
+    // mails carry invite and reset links (account takeover tokens), so only dev may print them
+    if (process.env.NODE_ENV === "production") throw new Error("SMTP_URL is not set; mail not sent");
     console.info(`[mail] to=${to} subject=${subject}\n${text}`);
     return;
   }
