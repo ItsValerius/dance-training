@@ -9,9 +9,9 @@ import { SignOutButton } from "./sign-out-button";
 export function Nav() {
   return (
     <header className="sticky top-0 z-40 border-b bg-card">
-      <nav className="mx-auto flex max-w-5xl items-center gap-x-2 px-4 sm:gap-x-4 sm:py-2">
+      <nav className="mx-auto flex max-w-5xl items-center gap-x-2 px-4 md:gap-x-4 md:py-2">
         {/* "/" sends trainers on to their plans */}
-        <Link href="/" className="flex h-14 items-center text-lg font-extrabold tracking-tight text-primary sm:h-12">
+        <Link href="/" className="flex h-14 items-center text-lg font-extrabold tracking-tight text-primary md:h-12">
           Tanztraining
         </Link>
         <Suspense>
@@ -27,8 +27,8 @@ async function NavSession() {
   if (!session) return null;
   return (
     <>
-      {/* phones: menu button at the right edge; sm+: tabs after the logo */}
-      <div className="flex items-center max-sm:order-last max-sm:ml-auto">
+      {/* below md: menu button at the right edge; md+: tabs after the logo (4 trainer tabs need the room) */}
+      <div className="flex items-center max-md:order-last max-md:ml-auto">
         <NavLinks
           role={isTrainer(session.user) ? "trainer" : "student"}
           account={
@@ -41,8 +41,8 @@ async function NavSession() {
         />
       </div>
       {/* on phones these live in the menu sheet */}
-      <div className="ml-auto flex items-center gap-1 max-sm:hidden">
-        <span className="mr-1 hidden max-w-40 truncate text-sm font-semibold text-muted-foreground sm:block">{session.user.name}</span>
+      <div className="ml-auto flex items-center gap-1 max-md:hidden">
+        <span className="mr-1 hidden max-w-40 truncate text-sm font-semibold text-muted-foreground lg:block">{session.user.name}</span>
         <ModeToggle />
         <SignOutButton />
       </div>

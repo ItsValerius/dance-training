@@ -7,7 +7,7 @@ import { TableSkeleton } from "@/components/skeleton";
 import { db } from "@/db";
 import { assignment, group, planExercise, trainingPlan, user } from "@/db/schema";
 import { requireTrainer } from "@/lib/auth";
-import { formatDue, planProgress, today } from "@/lib/queries";
+import { formatDueShort, planProgress, today } from "@/lib/queries";
 import { createPlan } from "../actions";
 
 export default function PlansPage() {
@@ -52,7 +52,7 @@ async function Plans() {
         const reached = progress[i];
         return {
           ...p,
-          due: formatDue(p.dueDate),
+          due: formatDueShort(p.dueDate),
           expired: p.dueDate < t,
           // groups first, then students assigned one by one
           audience: [...mine.flatMap((a) => (a.group ? [a.group] : [])), ...mine.flatMap((a) => (a.student ? [a.student] : []))],

@@ -16,6 +16,10 @@ const assignedTo = (userId: string) =>
 /** Today as YYYY-MM-DD in the club's time zone, to compare with `trainingPlan.dueDate`. */
 export const today = () => new Date().toLocaleDateString("sv-SE", { timeZone: "Europe/Berlin" });
 
+/** "So., 29.11.2026": for tables, where the long form doesn't fit. */
+export const formatDueShort = (d: string) =>
+  new Date(`${d}T12:00:00Z`).toLocaleDateString("de-DE", { weekday: "short", day: "2-digit", month: "2-digit", year: "numeric", timeZone: "UTC" });
+
 export const formatDue = (d: string) =>
   new Date(`${d}T12:00:00Z`).toLocaleDateString("de-DE", { weekday: "short", day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
 

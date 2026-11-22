@@ -51,7 +51,7 @@ const columns = helper.columns([
         </Link>
         {row.original.expired && <Badge variant="outline" className="text-muted-foreground">abgelaufen</Badge>}
         {/* phones: the hidden columns, one fact per line */}
-        <span className="grid w-full gap-0.5 text-sm text-muted-foreground sm:hidden">
+        <span className="grid w-full gap-0.5 text-sm text-muted-foreground md:hidden">
           <span>fällig {row.original.due}</span>
           <span>
             {row.original.exercises} {row.original.exercises === 1 ? "Übung" : "Übungen"}
@@ -88,6 +88,7 @@ export function PlansTable({ plans }: { plans: PlanRow[] }) {
       rowHref={(p) => `/trainer/plaene/${p.id}`}
       initialSorting={sorting}
       mobileHidden={["dueDate", "exercises", "audience", "finished"]}
+      stackBelow="md"
       empty={plans.length === 0 ? "Noch keine Trainingspläne. Leg deinen ersten an." : show === "expired" ? "Keine abgelaufenen Pläne." : "Keine aktuellen Pläne."}
       toolbar={(table) => {
         const title = table.getColumn("title");

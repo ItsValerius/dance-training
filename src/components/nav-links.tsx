@@ -22,7 +22,7 @@ const linksFor = {
   ],
 } satisfies Record<string, { href: string; label: string; also?: string }[]>;
 
-/** Section tabs from `sm` up, a menu sheet on phones (with `account`: name, theme, sign out). */
+/** Section tabs from `md` up, a menu sheet below (with `account`: name, theme, sign out). */
 export function NavLinks({ role, account }: { role: keyof typeof linksFor; account: React.ReactNode }) {
   const path = usePathname();
   const [open, setOpen] = useState(false);
@@ -39,7 +39,7 @@ export function NavLinks({ role, account }: { role: keyof typeof linksFor; accou
   return (
     <>
       <Sheet open={open} onOpenChange={setOpen}>
-        <SheetTrigger render={<Button variant="ghost" size="icon" aria-label="Menü öffnen" className="-mr-2 sm:hidden" />}>
+        <SheetTrigger render={<Button variant="ghost" size="icon" aria-label="Menü öffnen" className="-mr-2 md:hidden" />}>
           <Menu aria-hidden className="size-6" />
         </SheetTrigger>
         <SheetContent side="right" className="w-72 p-4">
@@ -54,7 +54,7 @@ export function NavLinks({ role, account }: { role: keyof typeof linksFor; accou
           <SheetFooter className="mt-auto flex-row items-center gap-1 border-t p-0 pt-3">{account}</SheetFooter>
         </SheetContent>
       </Sheet>
-      <div className="flex gap-1 max-sm:hidden">
+      <div className="flex gap-1 max-md:hidden">
         {items((active) =>
           cn(
             "inline-flex min-h-11 shrink-0 items-center rounded-full px-4 text-sm font-semibold transition-colors",

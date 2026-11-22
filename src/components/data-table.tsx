@@ -24,6 +24,9 @@ import { cn } from "cn";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
+// full class names, so Tailwind sees them
+const HIDE = { sm: "max-sm:hidden", md: "max-md:hidden" } as const;
+
 const features = tableFeatures({
   rowSortingFeature,
   columnFilteringFeature,
@@ -48,6 +51,7 @@ export function DataTable<T extends RowData>({
   toolbar,
   empty,
   mobileHidden = [],
+  stackBelow = "sm",
 }: {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- columns mix value types
   columns: ColumnDef<Features, T, any>[];
@@ -58,6 +62,8 @@ export function DataTable<T extends RowData>({
   empty: string;
   /** column ids hidden below `sm`; put their info into the title cell's mobile subline instead */
   mobileHidden?: string[];
+  /** breakpoint below which `mobileHidden` columns fold away; "md" for tables too wide for 640px */
+  stackBelow?: "sm" | "md";
 }) {
   const router = useRouter();
   const table = useTable({ features, columns, data, initialState: { sorting: initialSorting ?? [] } });
@@ -82,7 +88,7 @@ export function DataTable<T extends RowData>({
                 {group.headers.map((header) => {
                   const sorted = header.column.getIsSorted();
                   return (
-                    <TableHead key={header.id} aria-sort={sorted ? (sorted === "asc" ? "ascending" : "descending") : undefined} className={cn("px-4", mobileHidden.includes(header.column.id) && "max-sm:hidden")}>
+                    <TableHead key={header.id} aria-sort={sorted ? (sorted === "asc" ? "ascending" : "descending") : undefined} className={cn("px-4", mobileHidden.includes(header.column.id) && HIDE[stackBelow])}>
                       {header.column.getCanSort() ? (
                         <Button variant="ghost" className="-ml-4 px-4" onClick={header.column.getToggleSortingHandler()}>
                           <table.FlexRender header={header} />
@@ -114,7 +120,7 @@ export function DataTable<T extends RowData>({
                         "h-14", // one row height whether or not a cell holds a chip
                         cell.column.id === "actions" ? "w-px px-2 text-right whitespace-nowrap" : "px-4",
                         i === 0 && "whitespace-normal", // the title cell carries the phone subline; let it wrap
-                        mobileHidden.includes(cell.column.id) && "max-sm:hidden",
+                        mobileHidden.includes(cell.column.id) && HIDE[stackBelow],
                       )}
                     >
                       <table.FlexRender cell={cell} />

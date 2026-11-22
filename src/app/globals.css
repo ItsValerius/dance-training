@@ -118,8 +118,8 @@
   html {
     @apply font-sans;
     scroll-behavior: smooth;
-    /* reserve the scrollbar's space so short and long pages don't shift sideways */
-    scrollbar-gutter: stable;
+    /* no scrollbar-gutter: stable here. Browsers paint a reserved, empty gutter in their own default
+       color (white / near-black), not the page's, so it showed as a strip beside the nav and the page */
     scrollbar-color: var(--input) transparent;
   }
   body {
