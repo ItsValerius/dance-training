@@ -37,8 +37,7 @@ export default async function Home({ searchParams }: PageProps<"/">) {
         <section aria-label="Willkommen" className="surface space-y-1 border-primary/30 bg-secondary p-5 text-secondary-foreground">
           <p className="text-lg font-extrabold">Willkommen bei Tanztraining!</p>
           <p>
-            Dein Benutzername ist <strong className="font-extrabold">{me.username}</strong>. Merk ihn dir, du brauchst ihn zum Anmelden. Wir haben ihn dir
-            auch per E-Mail geschickt.
+            Du meldest dich ab jetzt mit <strong className="font-extrabold">{me.email}</strong> und deinem Passwort an.
           </p>
         </section>
       )}

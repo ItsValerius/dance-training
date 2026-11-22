@@ -42,11 +42,6 @@ export default async function InvitePage({ params }: PageProps<"/einladung/[toke
           <p className="text-sm text-muted-foreground">Der Name der Tänzerin oder des Tänzers.</p>
         </div>
         <div className="grid gap-2">
-          <Label htmlFor="username">Benutzername</Label>
-          <Input id="username" name="username" autoComplete="username" autoCapitalize="none" required pattern="[A-Za-z0-9_.]{3,30}" />
-          <p className="text-sm text-muted-foreground">3–30 Zeichen: Buchstaben, Zahlen, _ oder .</p>
-        </div>
-        <div className="grid gap-2">
           <Label htmlFor="password">Passwort</Label>
           <PasswordInput id="password" name="password" autoComplete="new-password" required minLength={8} />
           <p className="text-sm text-muted-foreground">Mindestens 8 Zeichen.</p>

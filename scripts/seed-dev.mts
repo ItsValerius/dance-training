@@ -5,9 +5,9 @@ import { assignment, category, exercise, group, groupMember } from "../src/db/sc
 import { slugify } from "../src/lib/slug";
 
 const PASSWORD = "password123";
-const mk = (username: string, name: string, role?: "admin") =>
+const mk = (handle: string, name: string, role?: "admin") =>
   auth.api.createUser({
-    body: { name, password: PASSWORD, role, email: `${username}@${role ? "trainers" : "students"}.invalid`, data: { username, displayUsername: username, contactEmail: `${username}@example.com` } },
+    body: { name, password: PASSWORD, role, email: `${handle}@example.com` }, // example.com is reserved, never delivers
   }).then((r) => r.user);
 
 await mk("coach", "Trainerin Anna", "admin");

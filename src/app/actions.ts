@@ -31,8 +31,6 @@ export async function setDone(exerciseId: string, done: boolean): Promise<{ ok: 
 
 const signupSchema = z.object({
   name: z.string().trim().min(1, "Name fehlt").max(100),
-  // mirrors better-auth username plugin defaults
-  username: z.string().trim().toLowerCase().regex(/^[a-z0-9_.]{3,30}$/, "Benutzername: 3–30 Buchstaben, Zahlen, _ oder ."),
   password: z.string().min(8, "Passwort muss mindestens 8 Zeichen haben").max(128),
 });
 
@@ -40,9 +38,7 @@ const signupSchema = z.object({
 export async function acceptInvite(token: string, _: ActionResult, data: FormData): Promise<ActionResult> {
   const parsed = signupSchema.safeParse(Object.fromEntries(data));
   if (!parsed.success) return { error: parsed.error.issues.map((i) => i.message).join(", ") };
-  const { name, username, password } = parsed.data;
-  const taken = await db.query.user.findFirst({ where: eq(user.username, username), columns: { id: true } });
-  if (taken) return { error: "Benutzername ist schon vergeben" };
+  const { name, password } = parsed.data;
 
   // claim the invite first so a double submit can't create two accounts
   const [invite] = await db
@@ -51,10 +47,13 @@ export async function acceptInvite(token: string, _: ActionResult, data: FormDat
     .where(and(eq(invitation.tokenHash, hashToken(token)), isNull(invitation.usedAt), gt(invitation.expiresAt, new Date())))
     .returning();
   if (!invite) return { error: "Diese Einladung ist abgelaufen oder wurde schon benutzt. Frag deinen Trainer nach einer neuen." };
+  const email = invite.email;
+  const taken = await db.query.user.findFirst({ where: eq(user.email, email), columns: { id: true } });
+  if (taken) return { error: "Für diese E-Mail gibt es schon ein Konto. Melde dich an oder nutze „Passwort vergessen“." };
 
   try {
     await auth.api.createUser({
-      body: { name, password, email: `${username}@students.invalid`, data: { username, displayUsername: username, contactEmail: invite.email } },
+      body: { name, password, email },
     });
   } catch (e) {
     console.error(e);
@@ -63,15 +62,15 @@ export async function acceptInvite(token: string, _: ActionResult, data: FormDat
   }
   try {
     await sendMail(
-      invite.email,
+      email,
       "Willkommen bei Tanztraining",
-      `Hallo ${name},\n\ndein Konto ist fertig.\n\nBenutzername: ${username}\nAnmelden: ${appUrl("/anmelden")}\n\nPasswort vergessen? Auf der Anmeldeseite kannst du dir einen Link an diese Adresse schicken lassen.`,
+      `Hallo ${name},\n\ndein Konto ist fertig. Du meldest dich mit dieser E-Mail-Adresse an.\n\nAnmelden: ${appUrl("/anmelden")}\n\nPasswort vergessen? Auf der Anmeldeseite kannst du dir einen Link an diese Adresse schicken lassen.`,
     );
   } catch (e) {
     console.error(e); // the account exists; a missing welcome mail must not block sign-in
   }
   try {
-    await auth.api.signInUsername({ body: { username, password }, headers: await headers() });
+    await auth.api.signInEmail({ body: { email, password }, headers: await headers() });
   } catch (e) {
     console.error(e);
     redirect("/anmelden"); // account exists; let them sign in by hand
@@ -82,41 +81,18 @@ export async function acceptInvite(token: string, _: ActionResult, data: FormDat
 // shortcut: in-memory throttle, per server instance; move to the DB if this runs on several instances
 const lastResetMail = new Map<string, number>();
 
-/**
- * Sends reset links to the contact address. Accepts a username or the contact email itself
- * (one mail per account, so siblings sharing a parent's address each get theirs). Same answer either way.
- */
+/** Sends a reset link if an account uses this email. Same answer either way. */
 export async function requestReset(_: ActionResult, data: FormData): Promise<ActionResult> {
-  const input = String(data.get("username") ?? "").trim().toLowerCase();
-  if (!input) return { error: "Benutzername oder E-Mail fehlt" };
-  const last = lastResetMail.get(input) ?? 0;
+  const email = String(data.get("email") ?? "").trim().toLowerCase();
+  if (!email) return { error: "E-Mail fehlt" };
+  const last = lastResetMail.get(email) ?? 0;
   if (Date.now() - last > 5 * 60 * 1000) {
-    lastResetMail.set(input, Date.now());
-    const accounts = await db.query.user.findMany({
-      where: input.includes("@") ? eq(user.contactEmail, input) : eq(user.username, input),
-      columns: { email: true },
-      limit: 10,
-    });
-    for (const u of accounts) {
-      try {
-        await auth.api.requestPasswordReset({ body: { email: u.email, redirectTo: "/passwort-neu" } });
-      } catch (e) {
-        console.error(e);
-      }
+    lastResetMail.set(email, Date.now());
+    try {
+      await auth.api.requestPasswordReset({ body: { email, redirectTo: "/passwort-neu" } });
+    } catch (e) {
+      console.error(e);
     }
   }
   return { ok: Date.now() };
-}
-
-/**
- * Login accepts a username or the contact email. An email maps to its account's username when exactly one
- * account uses it; siblings sharing a parent's address must use their username.
- */
-export async function resolveLogin(identifier: string): Promise<{ username: string } | { shared: true }> {
-  const input = String(identifier ?? "").trim().toLowerCase();
-  if (!input.includes("@")) return { username: input };
-  const accounts = await db.query.user.findMany({ where: eq(user.contactEmail, input), columns: { username: true }, limit: 2 });
-  if (accounts.length > 1) return { shared: true };
-  // unknown email: pass it through so sign-in fails with the usual message
-  return { username: accounts[0]?.username ?? input };
 }

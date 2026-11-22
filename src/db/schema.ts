@@ -69,7 +69,7 @@ export const completion = sqliteTable(
   (t) => [primaryKey({ columns: [t.userId, t.exerciseId] }), index("completion_exercise_idx").on(t.exerciseId)],
 );
 
-// One-time invite link: the recipient picks name, username and password. Only the token's hash is stored.
+// One-time invite link: the recipient picks name and password. Only the token's hash is stored.
 export const invitation = sqliteTable("invitation", {
   id: id(),
   email: text("email").notNull(),

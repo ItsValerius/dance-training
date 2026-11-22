@@ -55,7 +55,7 @@ export function categoryOptions() {
 export function students() {
   return db.query.user.findMany({
     where: eq(user.role, "user"),
-    columns: { id: true, name: true, username: true, contactEmail: true },
+    columns: { id: true, name: true, email: true },
     orderBy: asc(user.name),
   });
 }
