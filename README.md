@@ -12,7 +12,7 @@ Product context lives in `PRODUCT.md`, the design system (tokens, components, mo
 pnpm install
 cp .env.example .env        # fill BETTER_AUTH_SECRET (openssl rand -base64 32)
 pnpm db:push
-pnpm create-trainer <username> <password> "<Display Name>"
+pnpm create-trainer <username> <password> "<Display Name>" <email>
 pnpm dev
 ```
 

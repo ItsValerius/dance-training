@@ -17,16 +17,14 @@ export const auth = betterAuth({
     resetPasswordTokenExpiresIn: 60 * 60,
     // goes to the contact address (student or parent); the login email is only a placeholder
     sendResetPassword: async ({ user, url }) => {
-      const to = (user as { contactEmail?: string | null }).contactEmail;
-      if (!to) return;
       await sendMail(
-        to,
+        (user as typeof user & { contactEmail: string }).contactEmail,
         "Tanztraining: neues Passwort",
         `Hallo ${user.name},\n\nüber diesen Link kannst du ein neues Passwort für Tanztraining festlegen (1 Stunde gültig):\n${url}\n\nDein Benutzername: ${(user as { username?: string | null }).username}\n\nWenn du das nicht angefordert hast, kannst du diese Mail ignorieren.`,
       );
     },
   },
-  user: { additionalFields: { contactEmail: { type: "string", required: false, input: false } } },
+  user: { additionalFields: { contactEmail: { type: "string", required: true, input: false } } },
   plugins: [username(), admin(), nextCookies()],
 });
 

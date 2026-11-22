@@ -54,14 +54,13 @@ export async function acceptInvite(token: string, _: ActionResult, data: FormDat
 
   try {
     await auth.api.createUser({
-      body: { name, password, email: `${username}@students.invalid`, data: { username, displayUsername: username } },
+      body: { name, password, email: `${username}@students.invalid`, data: { username, displayUsername: username, contactEmail: invite.email } },
     });
   } catch (e) {
     console.error(e);
     await db.update(invitation).set({ usedAt: null }).where(eq(invitation.id, invite.id));
     return { error: "Etwas ist schiefgelaufen. Bitte versuch es noch einmal." };
   }
-  await db.update(user).set({ contactEmail: invite.email }).where(eq(user.username, username));
   try {
     await sendMail(
       invite.email,
@@ -95,10 +94,10 @@ export async function requestReset(_: ActionResult, data: FormData): Promise<Act
     lastResetMail.set(input, Date.now());
     const accounts = await db.query.user.findMany({
       where: input.includes("@") ? eq(user.contactEmail, input) : eq(user.username, input),
-      columns: { email: true, contactEmail: true },
+      columns: { email: true },
       limit: 10,
     });
-    for (const u of accounts.filter((a) => a.contactEmail)) {
+    for (const u of accounts) {
       try {
         await auth.api.requestPasswordReset({ body: { email: u.email, redirectTo: "/passwort-neu" } });
       } catch (e) {

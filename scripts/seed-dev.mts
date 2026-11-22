@@ -7,7 +7,7 @@ import { slugify } from "../src/lib/slug";
 const PASSWORD = "password123";
 const mk = (username: string, name: string, role?: "admin") =>
   auth.api.createUser({
-    body: { name, password: PASSWORD, role, email: `${username}@${role ? "trainers" : "students"}.invalid`, data: { username, displayUsername: username } },
+    body: { name, password: PASSWORD, role, email: `${username}@${role ? "trainers" : "students"}.invalid`, data: { username, displayUsername: username, contactEmail: `${username}@example.com` } },
   }).then((r) => r.user);
 
 await mk("coach", "Trainerin Anna", "admin");

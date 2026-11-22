@@ -23,7 +23,7 @@ export const user = sqliteTable("user", {
   banReason: text("ban_reason"),
   banExpires: integer("ban_expires", { mode: "timestamp_ms" }),
   // real address for invites/resets (student or parent); `email` stays a login placeholder
-  contactEmail: text("contact_email"),
+  contactEmail: text("contact_email").notNull(),
 });
 
 export const session = sqliteTable(
