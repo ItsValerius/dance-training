@@ -276,6 +276,6 @@ export async function setStudentGroups(userId: string, _: ActionResult, data: Fo
     return { error: errorMessage(e) };
   }
   revalidatePath("/trainer/schueler");
-  revalidatePath("/trainer/plaene/[id]", "page");
+  revalidatePath("/(app)/trainer/plaene/[id]", "page");
   return ok();
 }

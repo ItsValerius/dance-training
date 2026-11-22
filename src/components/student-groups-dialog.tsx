@@ -2,7 +2,7 @@
 
 import { Users } from "lucide-react";
 import { useState } from "react";
-import { setStudentGroups } from "@/app/trainer/actions";
+import { setStudentGroups } from "@/app/(app)/trainer/actions";
 import { ActionForm } from "@/components/action-form";
 import { MultiPicker } from "@/components/multi-picker";
 import { Button } from "@/components/ui/button";

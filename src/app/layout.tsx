@@ -1,7 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Suspense } from "react";
 import { Figtree } from "next/font/google";
-import { Nav } from "@/components/nav";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
@@ -20,10 +18,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="de" suppressHydrationWarning data-scroll-behavior="smooth" className={`${figtree.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          {/* nav reads the session cookie; pages get their boundary from loading.tsx */}
-          <Suspense>
-            <Nav />
-          </Suspense>
           {children}
         </ThemeProvider>
       </body>

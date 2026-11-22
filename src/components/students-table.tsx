@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { deleteStudent } from "@/app/trainer/actions";
+import { deleteStudent } from "@/app/(app)/trainer/actions";
 import { ConfirmDelete } from "@/components/confirm-delete";
 import { columnHelper, DataTable } from "@/components/data-table";
 import { StudentGroupsDialog } from "@/components/student-groups-dialog";

@@ -16,7 +16,7 @@ web
 The app gives each student one private place for the practice videos their trainer picked for them, so the links stop getting lost in chat groups. Success means:
 
 - students come to class having practised the assigned material at home;
-- a trainer can paste a YouTube link and get it into a training plan in under a minute (the "Neue Übung" dialog preselects the next plan due);
+- a trainer can paste a YouTube link and get it into a training plan in under a minute (the "Neue Übung" dialog has an optional plan picker);
 - the app replaces video links scattered across WhatsApp groups;
 - trainers can see which students checked an exercise off as done.
 

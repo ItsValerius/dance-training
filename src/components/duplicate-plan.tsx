@@ -1,7 +1,7 @@
 "use client";
 
 import { Copy } from "lucide-react";
-import { duplicatePlan } from "@/app/trainer/actions";
+import { duplicatePlan } from "@/app/(app)/trainer/actions";
 import { ActionForm } from "@/components/action-form";
 import { PlanFields } from "@/components/plan-fields";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";

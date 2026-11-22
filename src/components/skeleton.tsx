@@ -17,3 +17,22 @@ export function LoadingMain({ className, children }: ComponentProps<"main">) {
     </main>
   );
 }
+
+/** Suspense fallback for a trainer list: toolbar plus table rows, inside a page whose heading is already there. */
+export function TableSkeleton({ rows = 4 }: { rows?: number }) {
+  return (
+    <div role="status" aria-live="polite" className="space-y-3">
+      <span className="sr-only">Lädt…</span>
+      <Skeleton className="h-11 w-full max-w-xs" />
+      <div aria-hidden className="surface divide-y overflow-hidden">
+        <div className="h-12" />
+        {Array.from({ length: rows }, (_, i) => (
+          <div key={i} className="flex h-14 items-center gap-3 px-4">
+            <Skeleton className="h-5 w-40 rounded-full" />
+            <Skeleton className="ml-auto h-5 w-28 rounded-full" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}

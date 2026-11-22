@@ -25,8 +25,8 @@ export async function setDone(planId: string, exerciseId: string, done: boolean)
     return { ok: false };
   }
   revalidatePath("/");
-  revalidatePath("/verlauf", "layout");
-  revalidatePath("/trainer/plaene/[id]", "page");
+  revalidatePath("/(app)/verlauf", "layout");
+  revalidatePath("/(app)/trainer/plaene/[id]", "page");
   return { ok: true };
 }
 
