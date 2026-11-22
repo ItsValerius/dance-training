@@ -4,10 +4,7 @@ import { LoadingMain, Skeleton } from "@/components/skeleton";
 export function AuthLoading() {
   return (
     <LoadingMain className="flex flex-1 flex-col items-center justify-center gap-6 px-4 py-10">
-      <div className="flex flex-col items-center gap-2">
-        <Skeleton className="h-7 w-40 rounded-full" />
-        <Skeleton className="h-4 w-56 rounded-full" />
-      </div>
+      <Skeleton className="h-8 w-40 rounded-full" />
       <div className="surface grid w-full max-w-sm gap-4 p-5">
         <Skeleton className="h-7 w-36 rounded-full" />
         <Skeleton className="h-11" />
