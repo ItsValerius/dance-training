@@ -43,8 +43,9 @@ test("a group member sees the plan and may tick it", async () => {
   assert.equal(await q.isAssigned(ids.kid, ids.plan, ids.ex), true);
 });
 
-test("past plans only show in the history", async () => {
+test("past plans only show in the history, and can't be ticked off", async () => {
   assert.deepEqual((await q.plansForStudent(ids.kid, "past")).map((p) => p.id), [ids.past]);
+  assert.equal(await q.isAssigned(ids.kid, ids.past, ids.ex), false);
 });
 
 test("a direct assignment works without a group", async () => {

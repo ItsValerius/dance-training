@@ -82,13 +82,14 @@ export async function doneCounts(userId: string, planIds: string[]) {
   return m;
 }
 
-/** True if the exercise is part of a plan that reaches the student. */
+/** True if the exercise is part of a current plan that reaches the student, i.e. they may tick it off. Past plans are read-only. */
 export async function isAssigned(userId: string, planId: string, exerciseId: string) {
   const row = await db
     .select({ id: assignment.id })
     .from(assignment)
     .innerJoin(planExercise, and(eq(planExercise.planId, assignment.planId), eq(planExercise.exerciseId, exerciseId)))
-    .where(and(eq(assignment.planId, planId), assignedTo(userId)))
+    .innerJoin(trainingPlan, eq(trainingPlan.id, assignment.planId))
+    .where(and(eq(assignment.planId, planId), gte(trainingPlan.dueDate, today()), assignedTo(userId)))
     .get();
   return !!row;
 }

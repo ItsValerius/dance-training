@@ -46,7 +46,7 @@ export default async function ExercisePage({ params }: PageProps<"/trainer/uebun
   const t = today();
   const inPlans = plans.map((p, i) => {
     const doneIds = new Set(done.filter((d) => d.planId === p.id).map((d) => d.userId));
-    const people = reach[i].map((r) => ({ name: r.name, done: doneIds.has(r.id) }));
+    const people = reach[i].map((r) => ({ id: r.id, name: r.name, done: doneIds.has(r.id) }));
     return { ...p, people, expired: p.dueDate < t };
   });
   const addable = current.filter((o) => !plans.some((p) => p.id === o.value));
@@ -99,7 +99,7 @@ export default async function ExercisePage({ params }: PageProps<"/trainer/uebun
                   ) : (
                     <ul className="flex flex-wrap gap-x-3 gap-y-1 text-sm">
                       {p.people.map((x) => (
-                        <li key={x.name} className={x.done ? "flex items-center gap-1 font-semibold text-success-ink" : "text-muted-foreground"}>
+                        <li key={x.id} className={x.done ? "flex items-center gap-1 font-semibold text-success-ink" : "text-muted-foreground"}>
                           {x.done && <Check aria-hidden className="size-4 stroke-3" />}
                           {x.name}
                           <span className="sr-only">{x.done ? ", erledigt" : ", offen"}</span>

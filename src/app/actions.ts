@@ -7,9 +7,9 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import type { ActionResult } from "@/components/action-form";
 import { db } from "@/db";
-import { completion, invitation, trainingPlan, user } from "@/db/schema";
+import { completion, invitation, user } from "@/db/schema";
 import { auth, requireUser } from "@/lib/auth";
-import { isAssigned, today } from "@/lib/queries";
+import { isAssigned } from "@/lib/queries";
 import { appUrl, sendMail } from "@/lib/mail";
 import { hashToken } from "@/lib/tokens";
 
@@ -17,8 +17,6 @@ import { hashToken } from "@/lib/tokens";
 export async function setDone(planId: string, exerciseId: string, done: boolean): Promise<{ ok: boolean }> {
   const me = await requireUser();
   if (typeof planId !== "string" || typeof exerciseId !== "string" || !(await isAssigned(me.id, planId, exerciseId))) return { ok: false };
-  const plan = await db.query.trainingPlan.findFirst({ where: eq(trainingPlan.id, planId), columns: { dueDate: true } });
-  if (!plan || plan.dueDate < today()) return { ok: false }; // the plan is over; history is read-only
   try {
     if (done) await db.insert(completion).values({ userId: me.id, planId, exerciseId }).onConflictDoNothing();
     else await db.delete(completion).where(and(eq(completion.userId, me.id), eq(completion.planId, planId), eq(completion.exerciseId, exerciseId)));
