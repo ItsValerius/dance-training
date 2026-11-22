@@ -46,7 +46,7 @@ export function MultiPicker({
             {(values: string[]) => (
               <>
                 {values.map((v) => (
-                  <ComboboxChip key={v} className="h-7 bg-secondary px-2 text-sm text-secondary-foreground">
+                  <ComboboxChip key={v} className="bg-secondary text-secondary-foreground">
                     {label(v)}
                   </ComboboxChip>
                 ))}

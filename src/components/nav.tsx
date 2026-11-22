@@ -11,7 +11,7 @@ export async function Nav() {
   return (
     <header className="sticky top-0 z-40 border-b bg-card">
       <nav className="mx-auto flex max-w-5xl items-center gap-x-2 px-4 sm:gap-x-4 sm:py-2">
-        <Link href="/" className="flex h-14 items-center text-lg font-extrabold tracking-tight text-primary sm:h-12">
+        <Link href={trainer ? "/trainer/plaene" : "/"} className="flex h-14 items-center text-lg font-extrabold tracking-tight text-primary sm:h-12">
           Tanztraining
         </Link>
         {/* phones: menu button at the right edge; sm+: tabs after the logo */}

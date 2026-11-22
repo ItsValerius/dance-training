@@ -11,13 +11,13 @@ import { Button } from "@/components/ui/button";
 export function DuplicatePlan({ plan }: { plan: { id: string; title: string } }) {
   return (
     <Dialog>
-      <DialogTrigger render={<Button variant="ghost" size="icon" aria-label={`„${plan.title}“ duplizieren`} />}>
+      <DialogTrigger render={<Button variant="ghost" size="icon" aria-label={`„${plan.title}“ duplizieren`} title="Duplizieren" />}>
         <Copy aria-hidden />
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>„{plan.title}“ duplizieren</DialogTitle>
-          <DialogDescription>Übernimmt Übungen und Zuweisungen, der Fortschritt beginnt neu.</DialogDescription>
+          <DialogDescription>Mit Übungen und Zuweisungen, ohne Fortschritt.</DialogDescription>
         </DialogHeader>
         <ActionForm action={duplicatePlan.bind(null, plan.id)} className="grid gap-3">
           <PlanFields id={`copy-${plan.id}`} defaults={{ title: plan.title }} />

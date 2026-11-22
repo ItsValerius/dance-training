@@ -22,7 +22,7 @@ export default async function HistoryPage() {
               <li key={p.id}>
                 <Link href={`/verlauf/${p.id}`} className="flex flex-wrap items-center gap-x-3 gap-y-1 px-4 py-3.5 transition-colors hover:bg-muted">
                   <span className="font-semibold">{p.title}</span>
-                  <span className="text-sm text-muted-foreground">bis {formatDue(p.dueDate)}</span>
+                  <span className="text-sm text-muted-foreground">vorbei seit {formatDue(p.dueDate)}</span>
                   <span className={c.total && c.done === c.total ? "ml-auto text-sm font-semibold text-success-ink" : "ml-auto text-sm text-muted-foreground"}>
                     {c.done} von {c.total} erledigt
                   </span>

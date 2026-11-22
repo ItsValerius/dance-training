@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 export default function ForgotPasswordPage() {
   const [state, action, pending] = useActionState(requestReset, undefined);
   return (
-    <AuthShell title="Passwort vergessen" footer={<Link href="/anmelden" className="font-semibold text-primary underline">Zurück zur Anmeldung</Link>}>
+    <AuthShell title="Passwort vergessen" footer={<Link href="/anmelden" className="inline-flex min-h-11 items-center font-semibold text-primary underline">Zurück zur Anmeldung</Link>}>
       {state?.ok ? (
         <p role="status">
           Wenn wir ein passendes Konto gefunden haben, ist ein Link unterwegs. Schau auch im Spam-Ordner nach.

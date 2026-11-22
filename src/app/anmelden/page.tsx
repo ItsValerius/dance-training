@@ -32,13 +32,14 @@ export default function LoginPage() {
   return (
     <AuthShell
       title="Anmelden"
-      footer={<Link href="/passwort-vergessen" className="font-semibold text-primary underline">Passwort vergessen?</Link>}
+      footer={<Link href="/passwort-vergessen" className="inline-flex min-h-11 items-center font-semibold text-primary underline">Passwort vergessen?</Link>}
     >
       <form onSubmit={onSubmit} className="grid gap-4">
         <fieldset disabled={pending} className="contents">
           <div className="grid gap-2">
             <Label htmlFor="email">E-Mail</Label>
-            <Input id="email" name="email" type="email" autoComplete="email" required />
+            <Input id="email" name="email" type="email" autoComplete="email" required aria-describedby="email-hint" />
+            <p id="email-hint" className="text-sm text-muted-foreground">Die, an die deine Einladung ging.</p>
           </div>
           <div className="grid gap-2">
             <Label htmlFor="password">Passwort</Label>

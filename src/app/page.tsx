@@ -1,14 +1,25 @@
 import { Clapperboard } from "lucide-react";
 import { redirect } from "next/navigation";
+import { PlanStack } from "@/components/plan-stack";
 import { PlanView } from "@/components/plan-view";
 import { isTrainer, requireUser } from "@/lib/auth";
-import { plansForStudent } from "@/lib/queries";
+import { doneCounts, planExerciseIds, plansForStudent } from "@/lib/queries";
 
 export default async function Home({ searchParams }: PageProps<"/">) {
   const me = await requireUser();
   const { willkommen } = await searchParams;
-  if (isTrainer(me)) redirect("/trainer");
+  if (isTrainer(me)) redirect("/trainer/plaene");
   const plans = await plansForStudent(me.id, "current");
+  const ids = plans.map((p) => p.id);
+  const [counts, links] = await Promise.all([doneCounts(me.id, ids), planExerciseIds(ids)]);
+  const title = new Map(plans.map((p) => [p.id, p.title]));
+  // the same exercise can sit in two current plans; each copy names the other plans it's in
+  const alsoIn = (planId: string) =>
+    Object.fromEntries(
+      links
+        .filter((l) => l.planId === planId)
+        .map((l) => [l.exerciseId, links.filter((o) => o.exerciseId === l.exerciseId && o.planId !== planId).map((o) => title.get(o.planId)!)]),
+    );
   const firstName = me.name.split(" ")[0];
 
   return (
@@ -25,14 +36,12 @@ export default async function Home({ searchParams }: PageProps<"/">) {
       )}
 
       {plans.length > 0 ? (
-        // several groups or direct assignments can overlap: show every plan not yet due, soonest first
-        <div className="space-y-8">
-          {plans.map((plan) => (
-            <section key={plan.id} aria-label={plan.title} className="space-y-8 not-first:border-t not-first:pt-8">
-              <PlanView userId={me.id} plan={plan} />
-            </section>
-          ))}
-        </div>
+        <PlanStack
+          plans={plans.map((plan) => {
+            const c = counts.get(plan.id)!;
+            return { id: plan.id, title: plan.title, finished: c.total > 0 && c.done === c.total, view: <PlanView userId={me.id} plan={plan} alsoIn={alsoIn(plan.id)} /> };
+          })}
+        />
       ) : (
         <div className="surface flex flex-col items-center gap-3 px-6 py-12 text-center">
           <Clapperboard className="size-10 text-primary" strokeWidth={1.75} />

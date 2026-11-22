@@ -22,7 +22,10 @@ export function ConfirmDelete({ action, title, description, label }: { action: (
           <Trash2 aria-hidden />
         </AlertDialogTrigger>
       ) : (
-        <AlertDialogTrigger render={<Button variant="destructive" />}>Löschen</AlertDialogTrigger>
+        <AlertDialogTrigger render={<Button variant="destructive" className="max-sm:w-11 max-sm:px-0" />}>
+          <Trash2 aria-hidden />
+          <span className="max-sm:sr-only">Löschen</span>
+        </AlertDialogTrigger>
       )}
       <AlertDialogContent>
         <AlertDialogHeader>

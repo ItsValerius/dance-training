@@ -28,18 +28,21 @@ export default async function CategoriesPage() {
           </div>
         </CreateDialog>
       </div>
-      {categories.length === 0 && <p className="text-muted-foreground">Noch keine Kategorien.</p>}
-      <ul className="surface divide-y overflow-hidden">
-        {categories.map((c) => (
-          <li key={c.id} className="flex min-h-14 items-center gap-3 px-4 py-2.5">
-            <span className="font-semibold">{c.name}</span>
-            <span className="ml-auto text-sm text-muted-foreground">{c.used} {c.used === 1 ? "Übung" : "Übungen"}</span>
-            {c.used === 0 && (
-              <ConfirmDelete action={deleteCategory.bind(null, c.id)} title={`Kategorie „${c.name}“ löschen?`} description="Sie wird von keiner Übung verwendet." />
-            )}
-          </li>
-        ))}
-      </ul>
+      {categories.length === 0 ? (
+        <p className="text-muted-foreground">Noch keine Kategorien.</p>
+      ) : (
+        <ul className="surface divide-y overflow-hidden">
+          {categories.map((c) => (
+            <li key={c.id} className="flex min-h-14 items-center gap-3 px-4 py-2.5">
+              <span className="font-semibold">{c.name}</span>
+              <span className="ml-auto text-sm text-muted-foreground">{c.used} {c.used === 1 ? "Übung" : "Übungen"}</span>
+              {c.used === 0 && (
+                <ConfirmDelete action={deleteCategory.bind(null, c.id)} title={`Kategorie „${c.name}“ löschen?`} description="Keine Übung nutzt sie." />
+              )}
+            </li>
+          ))}
+        </ul>
+      )}
     </main>
   );
 }

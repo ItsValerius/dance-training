@@ -17,7 +17,7 @@ const linksFor = {
     { href: "/trainer/kategorien", label: "Kategorien" },
   ],
   student: [
-    { href: "/", label: "Aktueller Plan" },
+    { href: "/", label: "Aktuelle Pläne" },
     { href: "/verlauf", label: "Frühere Pläne" },
   ],
 } satisfies Record<string, { href: string; label: string; also?: string }[]>;

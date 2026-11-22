@@ -19,7 +19,7 @@ export function GroupsDialog({ groups }: { groups: { id: string; name: string; m
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Gruppen</DialogTitle>
-          <DialogDescription>Wer in welcher Gruppe ist, legst du in der Schülertabelle fest.</DialogDescription>
+          <DialogDescription>Mitglieder legst du in der Schülertabelle fest.</DialogDescription>
         </DialogHeader>
         <ActionForm action={createGroup} className="flex gap-2">
           <Input name="name" placeholder="Neue Gruppe" aria-label="Name der neuen Gruppe" required maxLength={100} />
@@ -38,7 +38,7 @@ export function GroupsDialog({ groups }: { groups: { id: string; name: string; m
                     label={`Gruppe ${g.name} löschen`}
                     action={deleteGroup.bind(null, g.id)}
                     title={`Gruppe „${g.name}“ löschen?`}
-                    description="Die Schüler bleiben, verlieren aber die Trainingspläne, die über diese Gruppe zugewiesen wurden."
+                    description="Schüler bleiben, Pläne der Gruppe fallen weg."
                   />
                 </span>
               </li>

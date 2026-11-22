@@ -21,7 +21,7 @@ export function StudentGroupsDialog({ student, groups }: { student: { id: string
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Gruppen von {student.name}</DialogTitle>
-          <DialogDescription>Trainingspläne einer Gruppe erreichen alle ihre Mitglieder.</DialogDescription>
+          <DialogDescription>Pläne einer Gruppe gehen an alle Mitglieder.</DialogDescription>
         </DialogHeader>
         <ActionForm action={setStudentGroups.bind(null, student.id)} onSuccess={() => setOpen(false)} resetOnSuccess={false} className="grid gap-3">
           <MultiPicker name="groupIds" options={groups.map((g) => ({ value: g.id, label: g.name }))} defaultValue={student.groupIds} ariaLabel="Gruppe hinzufügen" placeholder="Gruppe suchen" />

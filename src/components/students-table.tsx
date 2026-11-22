@@ -56,7 +56,7 @@ export function StudentsTable({ students, groups }: { students: StudentRow[]; gr
               label={`${row.original.name} löschen`}
               action={deleteStudent.bind(null, row.original.id)}
               title={`${row.original.name} löschen?`}
-              description="Konto und Gruppenmitgliedschaften werden entfernt. Das lässt sich nicht rückgängig machen."
+              description="Das lässt sich nicht rückgängig machen."
             />
           </span>
         ),

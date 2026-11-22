@@ -6,7 +6,7 @@ import { cn } from "cn";
 import { DoneToggle } from "@/components/done-toggle";
 import { Video } from "@/components/video";
 
-export type ExerciseItem = { id: string; title: string; description: string | null; youtubeId: string; done: boolean };
+export type ExerciseItem = { id: string; title: string; description: string | null; youtubeId: string; done: boolean; alsoIn: string[] };
 export type CategoryGroup = { category: string; items: ExerciseItem[] };
 
 /**
@@ -14,7 +14,8 @@ export type CategoryGroup = { category: string; items: ExerciseItem[] };
  * visit keeps the layout it was played in (card or row) until the next visit, so ticking or unticking never
  * unmounts a playing video; category order freezes while any video is in use so nothing moves under the thumb.
  */
-export function ExerciseList({ planId, groups }: { planId: string; groups: CategoryGroup[] }) {
+/** `past`: the plan is over; videos stay watchable, the done toggles go away. */
+export function ExerciseList({ planId, groups, past = false }: { planId: string; groups: CategoryGroup[]; past?: boolean }) {
   const [played, setPlayed] = useState<ReadonlyMap<string, "card" | "row">>(new Map());
   // category order as it was when the first video started; frozen from then on (new categories go last)
   const [frozen, setFrozen] = useState<string[] | null>(null);
@@ -53,13 +54,13 @@ export function ExerciseList({ planId, groups }: { planId: string; groups: Categ
     return (
       <section key={category} className="space-y-3">
         <ViewTransition name={`category-${planId}-${category}`} share="morph heading" update="morph heading" default="none">
-          <h2 className="flex items-baseline gap-2 text-lg font-extrabold">
+          <h3 className="flex items-baseline gap-2 text-base font-bold">
             {category}
             <span className={cn("text-sm font-semibold", doneCount < items.length ? "text-muted-foreground" : "text-success-ink")}>
               {doneCount}/{items.length}
               <span className="sr-only"> erledigt</span>
             </span>
-          </h2>
+          </h3>
         </ViewTransition>
         <div className="grid gap-5">
           {cards.map((e) => (
@@ -72,11 +73,12 @@ export function ExerciseList({ planId, groups }: { planId: string; groups: Categ
                 <Video id={e.youtubeId} title={e.title} className="rounded-none" onPlay={() => markPlayed(e.id, "card")} />
                 <div className="flex flex-col gap-3 p-4">
                   <div className="flex items-start gap-2">
-                    <h3 className="flex-1 text-lg leading-snug font-bold break-words hyphens-auto">{e.title}</h3>
+                    <h4 className="flex-1 text-lg leading-snug font-bold break-words hyphens-auto">{e.title}</h4>
                     {e.done && <CircleCheckBig aria-hidden className="mt-0.5 size-5 shrink-0 text-success-ink" />}
                   </div>
+                  {e.alsoIn.length > 0 && <p className="-mt-2 text-sm text-muted-foreground">Auch in {e.alsoIn.join(", ")}</p>}
                   {e.description && <p className="whitespace-pre-line text-muted-foreground">{e.description}</p>}
-                  <DoneToggle planId={planId} exerciseId={e.id} done={e.done} title={e.title} onToggle={(d) => onToggle(e.id, d)} />
+                  {!past && <DoneToggle planId={planId} exerciseId={e.id} done={e.done} title={e.title} onToggle={(d) => onToggle(e.id, d)} />}
                 </div>
               </article>
             </ViewTransition>
@@ -101,7 +103,7 @@ export function ExerciseList({ planId, groups }: { planId: string; groups: Categ
                     <Video id={e.youtubeId} title={e.title} className="rounded-none" onPlay={() => markPlayed(e.id, "row")} />
                     <div className="flex flex-col gap-3 p-4">
                       {e.description && <p className="whitespace-pre-line text-muted-foreground">{e.description}</p>}
-                      <DoneToggle planId={planId} exerciseId={e.id} done={e.done} title={e.title} onToggle={(d) => onToggle(e.id, d)} />
+                      {!past && <DoneToggle planId={planId} exerciseId={e.id} done={e.done} title={e.title} onToggle={(d) => onToggle(e.id, d)} />}
                     </div>
                   </details>
                 </li>

@@ -84,7 +84,7 @@ export function DataTable<T extends RowData>({
                   return (
                     <TableHead key={header.id} aria-sort={sorted ? (sorted === "asc" ? "ascending" : "descending") : undefined} className={cn("px-4", mobileHidden.includes(header.column.id) && "max-sm:hidden")}>
                       {header.column.getCanSort() ? (
-                        <Button variant="ghost" size="sm" className="-ml-3" onClick={header.column.getToggleSortingHandler()}>
+                        <Button variant="ghost" className="-ml-4 px-4" onClick={header.column.getToggleSortingHandler()}>
                           <table.FlexRender header={header} />
                           {sorted === "asc" ? <ArrowUp aria-hidden /> : sorted === "desc" ? <ArrowDown aria-hidden /> : <ArrowUpDown aria-hidden className="opacity-40" />}
                         </Button>
@@ -107,8 +107,15 @@ export function DataTable<T extends RowData>({
             ) : (
               rows.map((row) => (
                 <TableRow key={row.id} onClick={rowHref && ((e) => open(e, rowHref(row.original)))} className={cn(rowHref && "cursor-pointer")}>
-                  {row.getAllCells().map((cell) => (
-                    <TableCell key={cell.id} className={cn(cell.column.id === "actions" ? "w-px px-2 text-right whitespace-nowrap" : "px-4", mobileHidden.includes(cell.column.id) && "max-sm:hidden")}>
+                  {row.getAllCells().map((cell, i) => (
+                    <TableCell
+                      key={cell.id}
+                      className={cn(
+                        cell.column.id === "actions" ? "w-px px-2 text-right whitespace-nowrap" : "px-4",
+                        i === 0 && "whitespace-normal", // the title cell carries the phone subline; let it wrap
+                        mobileHidden.includes(cell.column.id) && "max-sm:hidden",
+                      )}
+                    >
                       <table.FlexRender cell={cell} />
                     </TableCell>
                   ))}

@@ -23,9 +23,10 @@ export const formatDue = (d: string) =>
 export function plansForStudent(userId: string, when: "current" | "past") {
   const t = today();
   return db
-    .selectDistinct({ id: trainingPlan.id, title: trainingPlan.title, dueDate: trainingPlan.dueDate })
+    .selectDistinct({ id: trainingPlan.id, title: trainingPlan.title, dueDate: trainingPlan.dueDate, trainer: user.name })
     .from(trainingPlan)
     .innerJoin(assignment, eq(assignment.planId, trainingPlan.id))
+    .leftJoin(user, eq(user.id, trainingPlan.createdById))
     .where(and(assignedTo(userId), when === "current" ? gte(trainingPlan.dueDate, t) : lt(trainingPlan.dueDate, t)))
     .orderBy(when === "current" ? asc(trainingPlan.dueDate) : desc(trainingPlan.dueDate));
 }
@@ -33,9 +34,10 @@ export function plansForStudent(userId: string, when: "current" | "past") {
 /** The plan if it's assigned to the student, else undefined. */
 export function planForStudent(userId: string, planId: string) {
   return db
-    .select({ id: trainingPlan.id, title: trainingPlan.title, dueDate: trainingPlan.dueDate })
+    .select({ id: trainingPlan.id, title: trainingPlan.title, dueDate: trainingPlan.dueDate, trainer: user.name })
     .from(trainingPlan)
     .innerJoin(assignment, eq(assignment.planId, trainingPlan.id))
+    .leftJoin(user, eq(user.id, trainingPlan.createdById))
     .where(and(eq(trainingPlan.id, planId), assignedTo(userId)))
     .get();
 }
@@ -52,13 +54,11 @@ export function planExercisesForStudent(userId: string, planId: string) {
       category: firstCategory,
       youtubeId: exercise.youtubeId,
       completedAt: completion.completedAt,
-      trainer: user.name,
     })
     .from(planExercise)
     .innerJoin(exercise, eq(exercise.id, planExercise.exerciseId))
     .leftJoin(exerciseCategory, eq(exerciseCategory.exerciseId, exercise.id))
     .leftJoin(category, eq(category.id, exerciseCategory.categoryId))
-    .leftJoin(user, eq(user.id, exercise.createdById))
     .leftJoin(completion, and(eq(completion.planId, planId), eq(completion.exerciseId, exercise.id), eq(completion.userId, userId)))
     .where(eq(planExercise.planId, planId))
     .groupBy(exercise.id)
@@ -134,4 +134,20 @@ export function students() {
     columns: { id: true, name: true, email: true },
     orderBy: asc(user.name),
   });
+}
+
+/** Plans due today or later, soonest first, as picker options ("Woche 3 · bis Fr., 28. November 2026"). */
+export async function currentPlanOptions() {
+  const rows = await db
+    .select({ id: trainingPlan.id, title: trainingPlan.title, dueDate: trainingPlan.dueDate })
+    .from(trainingPlan)
+    .where(gte(trainingPlan.dueDate, today()))
+    .orderBy(asc(trainingPlan.dueDate));
+  return rows.map((p) => ({ value: p.id, label: `${p.title} · fällig ${formatDue(p.dueDate)}` }));
+}
+
+/** Which exercises each of the given plans holds. */
+export async function planExerciseIds(planIds: string[]) {
+  if (!planIds.length) return [];
+  return db.select({ planId: planExercise.planId, exerciseId: planExercise.exerciseId }).from(planExercise).where(inArray(planExercise.planId, planIds));
 }

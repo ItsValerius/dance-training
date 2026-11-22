@@ -39,13 +39,14 @@ export default async function StudentsPage() {
           <CreateDialog
           label="Einladen"
           title="Per E-Mail einladen"
-          description="Des Kindes oder eines Elternteils. Der Link gilt 7 Tage; Name und Passwort wählt die Person selbst. Pro E-Mail gibt es ein Konto."
+          description="Der Link gilt 7 Tage."
           submitLabel="Einladung senden"
           action={inviteStudent}
         >
           <div className="grid gap-1.5">
             <Label htmlFor="inviteEmail">E-Mail</Label>
-            <Input id="inviteEmail" name="email" type="email" required placeholder="kind@beispiel.de" />
+            <Input id="inviteEmail" name="email" type="email" required placeholder="kind@beispiel.de" aria-describedby="inviteEmail-hint" />
+            <p id="inviteEmail-hint" className="text-sm text-muted-foreground">Geschwister brauchen je eine eigene Adresse.</p>
           </div>
           </CreateDialog>
         </div>

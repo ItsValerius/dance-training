@@ -11,6 +11,17 @@ export function ExerciseFields({ categories, defaults }: { categories: { value: 
   return (
     <>
       <div className="grid gap-1.5">
+        <Label htmlFor="youtubeUrl">YouTube-Link</Label>
+        <Input
+          id="youtubeUrl"
+          name="youtubeUrl"
+          type="url"
+          required
+          placeholder="https://youtu.be/…"
+          defaultValue={defaults && `https://youtu.be/${defaults.youtubeId}`}
+        />
+      </div>
+      <div className="grid gap-1.5">
         <Label htmlFor="title">Titel</Label>
         <Input id="title" name="title" required maxLength={200} defaultValue={defaults?.title} />
       </div>
@@ -22,17 +33,6 @@ export function ExerciseFields({ categories, defaults }: { categories: { value: 
             Noch keine Kategorien. <Link href="/trainer/kategorien" className="underline">Hier anlegen.</Link>
           </p>
         )}
-      </div>
-      <div className="grid gap-1.5">
-        <Label htmlFor="youtubeUrl">YouTube-Link</Label>
-        <Input
-          id="youtubeUrl"
-          name="youtubeUrl"
-          type="url"
-          required
-          placeholder="https://youtu.be/…"
-          defaultValue={defaults && `https://youtu.be/${defaults.youtubeId}`}
-        />
       </div>
       <div className="grid gap-1.5">
         <Label htmlFor="description">Beschreibung (optional)</Label>

@@ -48,11 +48,18 @@ export async function createExercise(_: ActionResult, data: FormData): Promise<A
   const parsed = parseExercise(data);
   if (!parsed.success) return fail(parsed.error);
   const { categoryIds, ...fields } = parsed.data;
+  const planIds = z.array(z.string().min(1)).parse(data.getAll("planIds"));
   const slug = await exerciseSlug(fields.title);
   await db.transaction(async (tx) => {
     const [row] = await tx.insert(exercise).values({ ...fields, slug, createdById: me.id }).returning();
     if (categoryIds.length) await tx.insert(exerciseCategory).values(categoryIds.map((categoryId) => ({ exerciseId: row.id, categoryId })));
+    if (planIds.length) await tx.insert(planExercise).values(planIds.map((planId) => ({ planId, exerciseId: row.id })));
   });
+  // created from a plan page: stay there, the dialog closes and the list refreshes
+  if (data.get("stay")) {
+    for (const planId of planIds) revalidatePath(`/trainer/plaene/${planId}`);
+    return ok();
+  }
   redirect(`/trainer/uebungen/${slug}`);
 }
 
@@ -131,14 +138,28 @@ export async function duplicatePlan(id: string, _: ActionResult, data: FormData)
 
 export async function addPlanExercise(planId: string, _: ActionResult, data: FormData): Promise<ActionResult> {
   await requireTrainer();
-  const parsed = z.string().min(1, "Übung wählen").safeParse(data.get("exerciseId"));
+  const parsed = z.array(z.string().min(1)).min(1, "Übung wählen").safeParse(data.getAll("exerciseId"));
   if (!parsed.success) return fail(parsed.error);
   try {
-    await db.insert(planExercise).values({ planId, exerciseId: parsed.data }).onConflictDoNothing();
+    await db.insert(planExercise).values(parsed.data.map((exerciseId) => ({ planId, exerciseId }))).onConflictDoNothing();
   } catch (e) {
     return { error: errorMessage(e) };
   }
   revalidatePath(`/trainer/plaene/${planId}`);
+  return ok();
+}
+
+/** From the exercise page: puts the exercise into the picked plans. */
+export async function addExerciseToPlans(exerciseId: string, slug: string, _: ActionResult, data: FormData): Promise<ActionResult> {
+  await requireTrainer();
+  const parsed = z.array(z.string().min(1)).min(1, "Plan wählen").safeParse(data.getAll("planIds"));
+  if (!parsed.success) return fail(parsed.error);
+  try {
+    await db.insert(planExercise).values(parsed.data.map((planId) => ({ planId, exerciseId }))).onConflictDoNothing();
+  } catch (e) {
+    return { error: errorMessage(e) };
+  }
+  revalidatePath(`/trainer/uebungen/${slug}`);
   return ok();
 }
 
