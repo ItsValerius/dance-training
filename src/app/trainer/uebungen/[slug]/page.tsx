@@ -96,7 +96,7 @@ export default async function ExercisePage({ params }: PageProps<"/trainer/uebun
         <ActionForm action={setAssignments.bind(null, ex.id)} resetOnSuccess={false} className="grid gap-4">
           <div className="grid gap-4 sm:grid-cols-2">
             <CheckList legend="Gruppen" name="groupIds" items={groups.map((g) => ({ id: g.id, label: g.name, checked: assignedGroups.has(g.id) }))} />
-            <CheckList legend="Schüler" name="userIds" items={allStudents.map((s) => ({ id: s.id, label: `${s.name} (${s.username})`, checked: assignedUsers.has(s.id) }))} />
+            <CheckList legend="Schüler" name="userIds" items={allStudents.map((s) => ({ id: s.id, label: `${s.name} (${s.email})`, checked: assignedUsers.has(s.id) }))} />
           </div>
           <Button type="submit" className="w-fit">Zuweisungen speichern</Button>
         </ActionForm>

@@ -1,6 +1,6 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { admin, username } from "better-auth/plugins";
+import { admin } from "better-auth/plugins";
 import { nextCookies } from "better-auth/next-js";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
@@ -15,19 +15,15 @@ export const auth = betterAuth({
     enabled: true,
     disableSignUp: true,
     resetPasswordTokenExpiresIn: 60 * 60,
-    // goes to the contact address (student or parent); the login email is only a placeholder
     sendResetPassword: async ({ user, url }) => {
-      const to = (user as { contactEmail?: string | null }).contactEmail;
-      if (!to) return;
       await sendMail(
-        to,
+        user.email,
         "Tanztraining: neues Passwort",
-        `Hallo ${user.name},\n\nüber diesen Link kannst du ein neues Passwort für Tanztraining festlegen (1 Stunde gültig):\n${url}\n\nDein Benutzername: ${(user as { username?: string | null }).username}\n\nWenn du das nicht angefordert hast, kannst du diese Mail ignorieren.`,
+        `Hallo ${user.name},\n\nüber diesen Link kannst du ein neues Passwort für Tanztraining festlegen (1 Stunde gültig):\n${url}\n\nWenn du das nicht angefordert hast, kannst du diese Mail ignorieren.`,
       );
     },
   },
-  user: { additionalFields: { contactEmail: { type: "string", required: false, input: false } } },
-  plugins: [username(), admin(), nextCookies()],
+  plugins: [admin(), nextCookies()],
 });
 
 // Roles: better-auth admin plugin's "admin" = trainer, default "user" = student.

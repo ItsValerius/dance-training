@@ -2,13 +2,12 @@
 
 import { and, eq, isNull, like, ne, or } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import type { ActionResult } from "@/components/action-form";
 import { db } from "@/db";
 import { assignment, category, exercise, group, groupMember, invitation, user } from "@/db/schema";
-import { auth, requireTrainer } from "@/lib/auth";
+import { requireTrainer } from "@/lib/auth";
 import { nextFreeSlug, slugify } from "@/lib/slug";
 import { youtubeId } from "@/lib/youtube";
 import { appUrl, sendMail } from "@/lib/mail";
@@ -90,21 +89,8 @@ export async function setAssignments(exerciseId: string, _: ActionResult, data: 
   return ok();
 }
 
-const passwordSchema = z.string().min(8, "Passwort muss mindestens 8 Zeichen haben").max(128);
-
 const emailSchema = z.email("Keine gültige E-Mail-Adresse").trim().toLowerCase().max(200);
 const INVITE_DAYS = 7;
-
-/** Contact address (student or parent) for invites and password-reset mails; empty clears it. */
-export async function setContactEmail(userId: string, _: ActionResult, data: FormData): Promise<ActionResult> {
-  await requireTrainer();
-  const raw = String(data.get("contactEmail") ?? "").trim();
-  const parsed = raw ? emailSchema.safeParse(raw) : { success: true as const, data: null };
-  if (!parsed.success) return fail(parsed.error);
-  await db.update(user).set({ contactEmail: parsed.data }).where(and(eq(user.id, userId), ne(user.role, "admin")));
-  revalidatePath("/trainer/schueler");
-  return ok();
-}
 
 export async function inviteStudent(_: ActionResult, data: FormData): Promise<ActionResult> {
   const me = await requireTrainer();
@@ -136,18 +122,6 @@ export async function revokeInvite(id: string) {
   await requireTrainer();
   await db.delete(invitation).where(and(eq(invitation.id, id), isNull(invitation.usedAt)));
   revalidatePath("/trainer/schueler");
-}
-
-export async function resetPassword(userId: string, _: ActionResult, data: FormData): Promise<ActionResult> {
-  await requireTrainer();
-  const parsed = passwordSchema.safeParse(data.get("password"));
-  if (!parsed.success) return fail(parsed.error);
-  try {
-    await auth.api.setUserPassword({ headers: await headers(), body: { userId, newPassword: parsed.data } });
-  } catch (e) {
-    return { error: errorMessage(e) };
-  }
-  return ok();
 }
 
 export async function deleteStudent(userId: string) {

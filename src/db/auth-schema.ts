@@ -16,14 +16,10 @@ export const user = sqliteTable("user", {
     .default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
     .$onUpdate(() => /* @__PURE__ */ new Date())
     .notNull(),
-  username: text("username").unique(),
-  displayUsername: text("display_username"),
   role: text("role"),
   banned: integer("banned", { mode: "boolean" }).default(false),
   banReason: text("ban_reason"),
   banExpires: integer("ban_expires", { mode: "timestamp_ms" }),
-  // real address for invites/resets (student or parent); `email` stays a login placeholder
-  contactEmail: text("contact_email"),
 });
 
 export const session = sqliteTable(

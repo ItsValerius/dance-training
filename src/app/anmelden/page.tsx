@@ -8,7 +8,6 @@ import { AuthShell } from "@/components/auth-shell";
 import { PasswordInput } from "@/components/password-input";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { resolveLogin } from "@/app/actions";
 import { authClient } from "@/lib/auth-client";
 
 export default function LoginPage() {
@@ -21,18 +20,11 @@ export default function LoginPage() {
     const form = new FormData(e.currentTarget);
     setPending(true);
     setError(null);
-    const login = await resolveLogin(String(form.get("username"))).catch(() => null);
-    if (!login) {
-      setPending(false);
-      return setError("Anmelden hat nicht geklappt. Prüf dein Internet und versuch es noch einmal.");
-    }
-    if ("shared" in login) {
-      setPending(false);
-      return setError("Diese E-Mail gehört zu mehreren Konten. Melde dich bitte mit deinem Benutzernamen an.");
-    }
-    const { error } = await authClient.signIn.username({ username: login.username, password: String(form.get("password")) });
+    const { error } = await authClient
+      .signIn.email({ email: String(form.get("email")).trim().toLowerCase(), password: String(form.get("password")) })
+      .catch(() => ({ error: { status: 0 } }));
     setPending(false);
-    if (error) return setError("Benutzername, E-Mail oder Passwort ist falsch.");
+    if (error) return setError(error.status ? "E-Mail oder Passwort ist falsch." : "Anmelden hat nicht geklappt. Prüf dein Internet und versuch es noch einmal.");
     router.replace("/");
     router.refresh();
   }
@@ -40,13 +32,13 @@ export default function LoginPage() {
   return (
     <AuthShell
       title="Anmelden"
-      footer={<Link href="/passwort-vergessen" className="font-semibold text-primary underline">Passwort oder Benutzername vergessen?</Link>}
+      footer={<Link href="/passwort-vergessen" className="font-semibold text-primary underline">Passwort vergessen?</Link>}
     >
       <form onSubmit={onSubmit} className="grid gap-4">
         <fieldset disabled={pending} className="contents">
           <div className="grid gap-2">
-            <Label htmlFor="username">Benutzername oder E-Mail</Label>
-            <Input id="username" name="username" autoComplete="username" autoCapitalize="none" required />
+            <Label htmlFor="email">E-Mail</Label>
+            <Input id="email" name="email" type="email" autoComplete="email" required />
           </div>
           <div className="grid gap-2">
             <Label htmlFor="password">Passwort</Label>

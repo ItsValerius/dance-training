@@ -10,7 +10,7 @@ import { db } from "@/db";
 import { invitation } from "@/db/schema";
 import { requireTrainer } from "@/lib/auth";
 import { students } from "@/lib/queries";
-import { deleteStudent, inviteStudent, resetPassword, revokeInvite, setContactEmail } from "../actions";
+import { deleteStudent, inviteStudent, revokeInvite } from "../actions";
 
 const dateFmt = new Intl.DateTimeFormat("de-DE", { day: "numeric", month: "long" });
 
@@ -36,21 +36,10 @@ export default async function StudentsPage() {
             <li key={s.id} className="grid gap-3 px-4 py-4">
               <div className="flex items-center gap-3">
                 <span className="font-semibold">{s.name}</span>
-                <span className="text-sm text-muted-foreground">{s.username}</span>
+                <span className="truncate text-sm text-muted-foreground">{s.email}</span>
                 <div className="ml-auto">
                   <ConfirmDelete action={deleteStudent.bind(null, s.id)} title={`${s.name} löschen?`} description="Konto und Gruppenmitgliedschaften werden entfernt. Das lässt sich nicht rückgängig machen." />
                 </div>
-              </div>
-              <div className="grid gap-2 lg:grid-cols-2">
-                {/* key: remount with the saved value after a change */}
-                <ActionForm key={s.contactEmail ?? ""} action={setContactEmail.bind(null, s.id)} resetOnSuccess={false} className="flex items-center gap-2">
-                  <Input name="contactEmail" type="email" defaultValue={s.contactEmail ?? ""} placeholder="E-Mail" aria-label={`E-Mail für ${s.name}`} className="min-w-0 flex-1 text-sm" />
-                  <Button type="submit" variant="outline">Speichern</Button>
-                </ActionForm>
-                <ActionForm action={resetPassword.bind(null, s.id)} className="flex items-center gap-2">
-                  <Input name="password" type="text" placeholder="Neues Passwort" aria-label={`Neues Passwort für ${s.name}`} minLength={8} required className="min-w-0 flex-1 text-sm" />
-                  <Button type="submit" variant="outline">Zurücksetzen</Button>
-                </ActionForm>
               </div>
             </li>
           ))}
@@ -65,7 +54,7 @@ export default async function StudentsPage() {
               <div className="grid gap-1.5">
                 <Label htmlFor="inviteEmail">E-Mail</Label>
                 <Input id="inviteEmail" name="email" type="email" required placeholder="kind@beispiel.de" />
-                <p className="text-sm text-muted-foreground">Des Kindes oder eines Elternteils. Der Link gilt 7 Tage; Name, Benutzername und Passwort wählt die Person selbst.</p>
+                <p className="text-sm text-muted-foreground">Des Kindes oder eines Elternteils. Der Link gilt 7 Tage; Name und Passwort wählt die Person selbst. Pro E-Mail gibt es ein Konto.</p>
               </div>
               <Button type="submit">Einladung senden</Button>
             </ActionForm>
