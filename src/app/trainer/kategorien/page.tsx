@@ -1,29 +1,33 @@
 import { asc, count, eq } from "drizzle-orm";
-import { ActionForm } from "@/components/action-form";
+import { CreateDialog } from "@/components/create-dialog";
 import { ConfirmDelete } from "@/components/confirm-delete";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { db } from "@/db";
-import { category, exercise } from "@/db/schema";
+import { category, exerciseCategory } from "@/db/schema";
 import { requireTrainer } from "@/lib/auth";
 import { createCategory, deleteCategory } from "../actions";
 
 export default async function CategoriesPage() {
   await requireTrainer();
   const categories = await db
-    .select({ id: category.id, name: category.name, used: count(exercise.id) })
+    .select({ id: category.id, name: category.name, used: count(exerciseCategory.exerciseId) })
     .from(category)
-    .leftJoin(exercise, eq(exercise.categoryId, category.id))
+    .leftJoin(exerciseCategory, eq(exerciseCategory.categoryId, category.id))
     .groupBy(category.id)
     .orderBy(asc(category.name));
 
   return (
     <main className="mx-auto w-full max-w-5xl space-y-6 px-4 pt-6 pb-16">
-      <h1 className="text-3xl font-extrabold tracking-tight">Kategorien</h1>
-      <ActionForm action={createCategory} className="flex gap-2">
-        <Input name="name" placeholder="Name der neuen Kategorie" aria-label="Name der neuen Kategorie" required maxLength={100} className="max-w-xs" />
-        <Button type="submit">Kategorie anlegen</Button>
-      </ActionForm>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-3xl font-extrabold tracking-tight">Kategorien</h1>
+        <CreateDialog label="Neue Kategorie" title="Neue Kategorie" action={createCategory}>
+          <div className="grid gap-1.5">
+            <Label htmlFor="category-name">Name</Label>
+            <Input id="category-name" name="name" required maxLength={100} />
+          </div>
+        </CreateDialog>
+      </div>
       {categories.length === 0 && <p className="text-muted-foreground">Noch keine Kategorien.</p>}
       <ul className="surface divide-y overflow-hidden">
         {categories.map((c) => (

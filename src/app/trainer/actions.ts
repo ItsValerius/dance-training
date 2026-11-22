@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import type { ActionResult } from "@/components/action-form";
 import { db } from "@/db";
-import { assignment, category, exercise, group, groupMember, invitation, user } from "@/db/schema";
+import { assignment, category, exercise, exerciseCategory, group, groupMember, invitation, planExercise, trainingPlan, user } from "@/db/schema";
 import { requireTrainer } from "@/lib/auth";
 import { nextFreeSlug, slugify } from "@/lib/slug";
 import { youtubeId } from "@/lib/youtube";
@@ -21,7 +21,7 @@ const errorMessage = (e: unknown) => (console.error(e), "Etwas ist schiefgelaufe
 const exerciseSchema = z.object({
   title: z.string().trim().min(1, "Titel fehlt").max(200),
   description: z.string().trim().max(5000).transform((s) => s || null),
-  categoryId: z.string().min(1, "Kategorie fehlt"),
+  categoryIds: z.array(z.string().min(1)),
   youtubeId: z.string().transform((u, ctx) => youtubeId(u) ?? (ctx.addIssue({ code: "custom", message: "Kein gültiger YouTube-Link" }), z.NEVER)),
 });
 
@@ -29,7 +29,7 @@ const parseExercise = (data: FormData) =>
   exerciseSchema.safeParse({
     title: data.get("title"),
     description: data.get("description") ?? "",
-    categoryId: data.get("categoryId") ?? "",
+    categoryIds: data.getAll("categoryIds"),
     youtubeId: data.get("youtubeUrl"),
   });
 
@@ -47,8 +47,12 @@ export async function createExercise(_: ActionResult, data: FormData): Promise<A
   const me = await requireTrainer();
   const parsed = parseExercise(data);
   if (!parsed.success) return fail(parsed.error);
-  const slug = await exerciseSlug(parsed.data.title);
-  await db.insert(exercise).values({ ...parsed.data, slug, createdById: me.id });
+  const { categoryIds, ...fields } = parsed.data;
+  const slug = await exerciseSlug(fields.title);
+  await db.transaction(async (tx) => {
+    const [row] = await tx.insert(exercise).values({ ...fields, slug, createdById: me.id }).returning();
+    if (categoryIds.length) await tx.insert(exerciseCategory).values(categoryIds.map((categoryId) => ({ exerciseId: row.id, categoryId })));
+  });
   redirect(`/trainer/uebungen/${slug}`);
 }
 
@@ -56,8 +60,13 @@ export async function updateExercise(id: string, oldSlug: string, _: ActionResul
   await requireTrainer();
   const parsed = parseExercise(data);
   if (!parsed.success) return fail(parsed.error);
-  const slug = await exerciseSlug(parsed.data.title, id);
-  await db.update(exercise).set({ ...parsed.data, slug }).where(eq(exercise.id, id));
+  const { categoryIds, ...fields } = parsed.data;
+  const slug = await exerciseSlug(fields.title, id);
+  await db.transaction(async (tx) => {
+    await tx.update(exercise).set({ ...fields, slug }).where(eq(exercise.id, id));
+    await tx.delete(exerciseCategory).where(eq(exerciseCategory.exerciseId, id));
+    if (categoryIds.length) await tx.insert(exerciseCategory).values(categoryIds.map((categoryId) => ({ exerciseId: id, categoryId })));
+  });
   // title changed -> new URL
   if (slug !== oldSlug) redirect(`/trainer/uebungen/${slug}`);
   revalidatePath(`/trainer/uebungen/${slug}`);
@@ -70,22 +79,89 @@ export async function deleteExercise(id: string) {
   redirect("/trainer");
 }
 
-/** Replaces the exercise's assignments with the checked students and groups. */
-export async function setAssignments(exerciseId: string, _: ActionResult, data: FormData): Promise<ActionResult> {
+const planSchema = z.object({
+  title: z.string().trim().min(1, "Titel fehlt").max(200),
+  dueDate: z.iso.date("Fälligkeitsdatum fehlt"),
+});
+const parsePlan = (data: FormData) => planSchema.safeParse({ title: data.get("title"), dueDate: data.get("dueDate") });
+
+export async function createPlan(_: ActionResult, data: FormData): Promise<ActionResult> {
+  const me = await requireTrainer();
+  const parsed = parsePlan(data);
+  if (!parsed.success) return fail(parsed.error);
+  const [plan] = await db.insert(trainingPlan).values({ ...parsed.data, createdById: me.id }).returning();
+  redirect(`/trainer/plaene/${plan.id}`);
+}
+
+export async function updatePlan(id: string, _: ActionResult, data: FormData): Promise<ActionResult> {
   await requireTrainer();
-  const ids = z.array(z.string().min(1));
-  const userIds = ids.parse(data.getAll("userIds"));
-  const groupIds = ids.parse(data.getAll("groupIds"));
+  const parsed = parsePlan(data);
+  if (!parsed.success) return fail(parsed.error);
+  await db.update(trainingPlan).set(parsed.data).where(eq(trainingPlan.id, id));
+  revalidatePath(`/trainer/plaene/${id}`);
+  return ok();
+}
+
+export async function deletePlan(id: string) {
+  await requireTrainer();
+  await db.delete(trainingPlan).where(eq(trainingPlan.id, id));
+  redirect("/trainer/plaene");
+}
+
+/** Copies a plan's exercises and assignments into a new plan with a new due date; done states start fresh. */
+export async function duplicatePlan(id: string, _: ActionResult, data: FormData): Promise<ActionResult> {
+  const me = await requireTrainer();
+  const parsed = parsePlan(data);
+  if (!parsed.success) return fail(parsed.error);
+  let newId: string;
+  try {
+    newId = await db.transaction(async (tx) => {
+      const [plan] = await tx.insert(trainingPlan).values({ ...parsed.data, createdById: me.id }).returning();
+      const exercises = await tx.select().from(planExercise).where(eq(planExercise.planId, id));
+      const targets = await tx.select().from(assignment).where(eq(assignment.planId, id));
+      if (exercises.length) await tx.insert(planExercise).values(exercises.map((e) => ({ planId: plan.id, exerciseId: e.exerciseId })));
+      if (targets.length) await tx.insert(assignment).values(targets.map((a) => ({ planId: plan.id, userId: a.userId, groupId: a.groupId, excluded: a.excluded })));
+      return plan.id;
+    });
+  } catch (e) {
+    return { error: errorMessage(e) };
+  }
+  redirect(`/trainer/plaene/${newId}`);
+}
+
+export async function addPlanExercise(planId: string, _: ActionResult, data: FormData): Promise<ActionResult> {
+  await requireTrainer();
+  const parsed = z.string().min(1, "Übung wählen").safeParse(data.get("exerciseId"));
+  if (!parsed.success) return fail(parsed.error);
+  try {
+    await db.insert(planExercise).values({ planId, exerciseId: parsed.data }).onConflictDoNothing();
+  } catch (e) {
+    return { error: errorMessage(e) };
+  }
+  revalidatePath(`/trainer/plaene/${planId}`);
+  return ok();
+}
+
+export async function removePlanExercise(planId: string, exerciseId: string) {
+  await requireTrainer();
+  await db.delete(planExercise).where(and(eq(planExercise.planId, planId), eq(planExercise.exerciseId, exerciseId)));
+  revalidatePath(`/trainer/plaene/${planId}`);
+}
+
+/** Replaces the plan's assignments with the picked targets: "g:<groupId>", "u:<userId>" or "x:<userId>" (excluded). */
+export async function setAssignments(planId: string, _: ActionResult, data: FormData): Promise<ActionResult> {
+  await requireTrainer();
+  const targets = z.array(z.string().regex(/^[gux]:.+$/)).parse(data.getAll("targets"));
+  const rows = targets.map((t) => (t.startsWith("g:") ? { planId, groupId: t.slice(2) } : { planId, userId: t.slice(2), excluded: t.startsWith("x:") }));
   try {
     await db.transaction(async (tx) => {
-      await tx.delete(assignment).where(eq(assignment.exerciseId, exerciseId));
-      const rows = [...userIds.map((userId) => ({ exerciseId, userId })), ...groupIds.map((groupId) => ({ exerciseId, groupId }))];
+      await tx.delete(assignment).where(eq(assignment.planId, planId));
       if (rows.length) await tx.insert(assignment).values(rows);
     });
   } catch (e) {
     return { error: errorMessage(e) };
   }
-  revalidatePath("/trainer/uebungen/[slug]", "page");
+  revalidatePath(`/trainer/plaene/${planId}`);
   return ok();
 }
 
@@ -156,28 +232,29 @@ export async function createGroup(_: ActionResult, data: FormData): Promise<Acti
   const exists = await db.query.group.findFirst({ where: eq(group.name, parsed.data) });
   if (exists) return { error: "Eine Gruppe mit diesem Namen gibt es schon" };
   await db.insert(group).values({ name: parsed.data });
-  revalidatePath("/trainer/gruppen");
+  revalidatePath("/trainer/schueler");
   return ok();
 }
 
 export async function deleteGroup(groupId: string) {
   await requireTrainer();
   await db.delete(group).where(eq(group.id, groupId));
-  revalidatePath("/trainer/gruppen");
+  revalidatePath("/trainer/schueler");
 }
 
-/** Replaces the group's members with the checked students. */
-export async function setGroupMembers(groupId: string, _: ActionResult, data: FormData): Promise<ActionResult> {
+/** Replaces the student's group memberships with the picked groups. */
+export async function setStudentGroups(userId: string, _: ActionResult, data: FormData): Promise<ActionResult> {
   await requireTrainer();
-  const userIds = z.array(z.string().min(1)).parse(data.getAll("userIds"));
+  const groupIds = z.array(z.string().min(1)).parse(data.getAll("groupIds"));
   try {
     await db.transaction(async (tx) => {
-      await tx.delete(groupMember).where(eq(groupMember.groupId, groupId));
-      if (userIds.length) await tx.insert(groupMember).values(userIds.map((userId) => ({ groupId, userId })));
+      await tx.delete(groupMember).where(eq(groupMember.userId, userId));
+      if (groupIds.length) await tx.insert(groupMember).values(groupIds.map((groupId) => ({ groupId, userId })));
     });
   } catch (e) {
     return { error: errorMessage(e) };
   }
-  revalidatePath("/trainer/gruppen");
+  revalidatePath("/trainer/schueler");
+  revalidatePath("/trainer/plaene/[id]", "page");
   return ok();
 }

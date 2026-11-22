@@ -1,3 +1,4 @@
 {
-  "regions": ["dub1"]
+  "regions": ["dub1"],
+  "buildCommand": "if [ \"$VERCEL_ENV\" = production ]; then pnpm db:migrate; fi && pnpm build"
 }

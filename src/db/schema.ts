@@ -33,40 +33,74 @@ export const exercise = sqliteTable("exercise", {
   title: text("title").notNull(),
   slug: text("slug").notNull().unique(),
   description: text("description"),
-  // restrict: a category in use can't be deleted
-  categoryId: text("category_id").notNull().references(() => category.id, { onDelete: "restrict" }),
   youtubeId: text("youtube_id").notNull(),
   createdById: text("created_by_id").references(() => user.id, { onDelete: "set null" }),
   createdAt: createdAt(),
 });
 
-// One row per target: either a single student or a whole group.
+// An exercise has zero or more categories.
+export const exerciseCategory = sqliteTable(
+  "exercise_category",
+  {
+    exerciseId: text("exercise_id").notNull().references(() => exercise.id, { onDelete: "cascade" }),
+    // restrict: a category in use can't be deleted
+    categoryId: text("category_id").notNull().references(() => category.id, { onDelete: "restrict" }),
+  },
+  (t) => [primaryKey({ columns: [t.exerciseId, t.categoryId] }), index("exercise_category_category_idx").on(t.categoryId)],
+);
+
+// A dated set of exercises; duplicated with a new due date for the next round.
+export const trainingPlan = sqliteTable(
+  "training_plan",
+  {
+    id: id(),
+    title: text("title").notNull(),
+    dueDate: text("due_date").notNull(), // YYYY-MM-DD, compares as text
+    createdById: text("created_by_id").references(() => user.id, { onDelete: "set null" }),
+    createdAt: createdAt(),
+  },
+  (t) => [index("training_plan_due_idx").on(t.dueDate)],
+);
+
+export const planExercise = sqliteTable(
+  "plan_exercise",
+  {
+    planId: text("plan_id").notNull().references(() => trainingPlan.id, { onDelete: "cascade" }),
+    exerciseId: text("exercise_id").notNull().references(() => exercise.id, { onDelete: "cascade" }),
+  },
+  (t) => [primaryKey({ columns: [t.planId, t.exerciseId] }), index("plan_exercise_exercise_idx").on(t.exerciseId)],
+);
+
+// One row per target of a plan: either a single student or a whole group, or an excluded student.
 export const assignment = sqliteTable(
   "assignment",
   {
     id: id(),
-    exerciseId: text("exercise_id").notNull().references(() => exercise.id, { onDelete: "cascade" }),
+    planId: text("plan_id").notNull().references(() => trainingPlan.id, { onDelete: "cascade" }),
     userId: text("user_id").references(() => user.id, { onDelete: "cascade" }),
     groupId: text("group_id").references(() => group.id, { onDelete: "cascade" }),
+    // a user row with excluded=true removes that student even if one of their groups is assigned
+    excluded: integer("excluded", { mode: "boolean" }).notNull().default(false),
     createdAt: createdAt(),
   },
   (t) => [
     check("assignment_one_target", sql`(${t.userId} is null) <> (${t.groupId} is null)`),
-    index("assignment_exercise_idx").on(t.exerciseId),
+    index("assignment_plan_idx").on(t.planId),
     index("assignment_user_idx").on(t.userId),
     index("assignment_group_idx").on(t.groupId),
   ],
 );
 
-// A student marked an exercise as done; deleting the row un-checks it.
+// A student marked an exercise of a plan as done; deleting the row un-checks it.
 export const completion = sqliteTable(
   "completion",
   {
     userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
+    planId: text("plan_id").notNull().references(() => trainingPlan.id, { onDelete: "cascade" }),
     exerciseId: text("exercise_id").notNull().references(() => exercise.id, { onDelete: "cascade" }),
     completedAt: createdAt(),
   },
-  (t) => [primaryKey({ columns: [t.userId, t.exerciseId] }), index("completion_exercise_idx").on(t.exerciseId)],
+  (t) => [primaryKey({ columns: [t.userId, t.planId, t.exerciseId] }), index("completion_plan_idx").on(t.planId)],
 );
 
 // One-time invite link: the recipient picks name and password. Only the token's hash is stored.

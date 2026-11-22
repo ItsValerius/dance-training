@@ -11,11 +11,13 @@ import { markTick } from "@/lib/celebrate";
  * plus a separate "Rückgängig" button, so a double tap can never silently un-tick.
  */
 export function DoneToggle({
+  planId,
   exerciseId,
   done,
   title,
   onToggle,
 }: {
+  planId: string;
   exerciseId: string;
   done: boolean;
   title: string;
@@ -30,7 +32,7 @@ export function DoneToggle({
       onToggle?.(next);
       setOptimistic(next);
       // network errors throw, server-side refusals return ok: false; both revert the optimistic state
-      const res = await setDone(exerciseId, next).catch(() => ({ ok: false }));
+      const res = await setDone(planId, exerciseId, next).catch(() => ({ ok: false }));
       if (!res.ok) setFailed(true);
     });
 

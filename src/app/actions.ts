@@ -13,19 +13,20 @@ import { isAssigned } from "@/lib/queries";
 import { appUrl, sendMail } from "@/lib/mail";
 import { hashToken } from "@/lib/tokens";
 
-/** Student checks an exercise off (or un-checks it). Only exercises assigned to them. */
-export async function setDone(exerciseId: string, done: boolean): Promise<{ ok: boolean }> {
+/** Student checks an exercise of a plan off (or un-checks it). Only plans assigned to them. */
+export async function setDone(planId: string, exerciseId: string, done: boolean): Promise<{ ok: boolean }> {
   const me = await requireUser();
-  if (typeof exerciseId !== "string" || !(await isAssigned(me.id, exerciseId))) return { ok: false };
+  if (typeof planId !== "string" || typeof exerciseId !== "string" || !(await isAssigned(me.id, planId, exerciseId))) return { ok: false };
   try {
-    if (done) await db.insert(completion).values({ userId: me.id, exerciseId }).onConflictDoNothing();
-    else await db.delete(completion).where(and(eq(completion.userId, me.id), eq(completion.exerciseId, exerciseId)));
+    if (done) await db.insert(completion).values({ userId: me.id, planId, exerciseId }).onConflictDoNothing();
+    else await db.delete(completion).where(and(eq(completion.userId, me.id), eq(completion.planId, planId), eq(completion.exerciseId, exerciseId)));
   } catch (e) {
     console.error(e);
     return { ok: false };
   }
   revalidatePath("/");
-  revalidatePath("/trainer/uebungen/[slug]", "page");
+  revalidatePath("/verlauf", "layout");
+  revalidatePath("/trainer/plaene/[id]", "page");
   return { ok: true };
 }
 

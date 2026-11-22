@@ -14,7 +14,7 @@ export type CategoryGroup = { category: string; items: ExerciseItem[] };
  * visit keeps the layout it was played in (card or row) until the next visit, so ticking or unticking never
  * unmounts a playing video; category order freezes while any video is in use so nothing moves under the thumb.
  */
-export function ExerciseList({ groups }: { groups: CategoryGroup[] }) {
+export function ExerciseList({ planId, groups }: { planId: string; groups: CategoryGroup[] }) {
   const [played, setPlayed] = useState<ReadonlyMap<string, "card" | "row">>(new Map());
   // category order as it was when the first video started; frozen from then on (new categories go last)
   const [frozen, setFrozen] = useState<string[] | null>(null);
@@ -40,10 +40,10 @@ export function ExerciseList({ groups }: { groups: CategoryGroup[] }) {
     if (!want) return;
     const item = groups.flatMap((g) => g.items).find((e) => e.id === want.id);
     if (!item || item.done !== want.done) return;
-    const box = document.querySelector(`[data-exercise="${want.id}"]`);
+    const box = document.querySelector(`[data-exercise="${planId}-${want.id}"]`);
     (box?.querySelector<HTMLElement>("summary") ?? box?.querySelector<HTMLElement>("[data-toggle]"))?.focus();
     pendingFocus.current = null;
-  }, [groups]);
+  }, [groups, planId]);
 
   return sorted.map(({ category, items }) => {
     const isRow = (e: ExerciseItem) => played.get(e.id) ?? (e.done ? "row" : "card");
@@ -52,7 +52,7 @@ export function ExerciseList({ groups }: { groups: CategoryGroup[] }) {
     const doneCount = items.filter((e) => e.done).length;
     return (
       <section key={category} className="space-y-3">
-        <ViewTransition name={`category-${category}`} share="morph heading" update="morph heading" default="none">
+        <ViewTransition name={`category-${planId}-${category}`} share="morph heading" update="morph heading" default="none">
           <h2 className="flex items-baseline gap-2 text-lg font-extrabold">
             {category}
             <span className={cn("text-sm font-semibold", doneCount < items.length ? "text-muted-foreground" : "text-success-ink")}>
@@ -63,10 +63,10 @@ export function ExerciseList({ groups }: { groups: CategoryGroup[] }) {
         </ViewTransition>
         <div className="grid gap-5">
           {cards.map((e) => (
-            <ViewTransition key={e.id} name={`exercise-${e.id}`} share="morph lift" update="morph" default="none">
+            <ViewTransition key={e.id} name={`exercise-${planId}-${e.id}`} share="morph lift" update="morph" default="none">
               <article
-                id={`uebung-${e.id}`}
-                data-exercise={e.id}
+                id={`uebung-${planId}-${e.id}`}
+                data-exercise={`${planId}-${e.id}`}
                 className={cn("surface flex scroll-mt-20 flex-col overflow-hidden transition-colors", e.done && "border-success/40 bg-success-soft")}
               >
                 <Video id={e.youtubeId} title={e.title} className="rounded-none" onPlay={() => markPlayed(e.id, "card")} />
@@ -76,7 +76,7 @@ export function ExerciseList({ groups }: { groups: CategoryGroup[] }) {
                     {e.done && <CircleCheckBig aria-hidden className="mt-0.5 size-5 shrink-0 text-success-ink" />}
                   </div>
                   {e.description && <p className="whitespace-pre-line text-muted-foreground">{e.description}</p>}
-                  <DoneToggle exerciseId={e.id} done={e.done} title={e.title} onToggle={(d) => onToggle(e.id, d)} />
+                  <DoneToggle planId={planId} exerciseId={e.id} done={e.done} title={e.title} onToggle={(d) => onToggle(e.id, d)} />
                 </div>
               </article>
             </ViewTransition>
@@ -85,8 +85,8 @@ export function ExerciseList({ groups }: { groups: CategoryGroup[] }) {
         {rows.length > 0 && (
           <ul className="grid gap-2">
             {rows.map((e) => (
-              <ViewTransition key={e.id} name={`exercise-${e.id}`} share="morph lift" update="morph" default="none">
-                <li data-exercise={e.id}>
+              <ViewTransition key={e.id} name={`exercise-${planId}-${e.id}`} share="morph lift" update="morph" default="none">
+                <li data-exercise={`${planId}-${e.id}`}>
                   <details className="group surface overflow-hidden border-success/40 bg-success-soft transition-colors hover:border-success/70">
                     <summary className="flex min-h-14 cursor-pointer list-none items-center gap-3 px-4 py-3 [&::-webkit-details-marker]:hidden">
                       <CircleCheckBig aria-hidden className="size-5 shrink-0 text-success-ink" />
@@ -101,7 +101,7 @@ export function ExerciseList({ groups }: { groups: CategoryGroup[] }) {
                     <Video id={e.youtubeId} title={e.title} className="rounded-none" onPlay={() => markPlayed(e.id, "row")} />
                     <div className="flex flex-col gap-3 p-4">
                       {e.description && <p className="whitespace-pre-line text-muted-foreground">{e.description}</p>}
-                      <DoneToggle exerciseId={e.id} done={e.done} title={e.title} onToggle={(d) => onToggle(e.id, d)} />
+                      <DoneToggle planId={planId} exerciseId={e.id} done={e.done} title={e.title} onToggle={(d) => onToggle(e.id, d)} />
                     </div>
                   </details>
                 </li>

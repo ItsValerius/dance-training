@@ -10,18 +10,23 @@ export function ActionForm({
   children,
   className,
   resetOnSuccess = true,
+  onSuccess,
 }: {
   action: (prev: ActionResult, data: FormData) => Promise<ActionResult>;
   children: React.ReactNode;
   className?: string;
   resetOnSuccess?: boolean;
+  onSuccess?: () => void;
 }) {
   const [state, formAction, pending] = useActionState(action, undefined);
   const ref = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
-    if (resetOnSuccess && state?.ok) ref.current?.reset();
-  }, [state?.ok, resetOnSuccess]);
+    if (!state?.ok) return;
+    if (resetOnSuccess) ref.current?.reset();
+    onSuccess?.();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- run once per success, not when the callback identity changes
+  }, [state?.ok]);
 
   return (
     <form
